@@ -1,0 +1,52 @@
+generated: '2026-07-18'
+method: searched
+source: https://codag.ai/docs/rest-api.html
+docs: https://codag.ai/docs
+notes: >-
+  The published openapi.json declares no components.securitySchemes (FastAPI app
+  applies auth via dependencies), so this profile is reconstructed from the REST
+  API docs and the spec's OAuth/key operations. Two request-time credential
+  models: an org-scoped Bearer API token for the compaction API, and an OAuth 2.0
+  device-authorization flow used by the CLI. Console/web sessions use Google
+  sign-in. The free compaction path is unauthenticated.
+summary:
+  types: [http, oauth2, apiKey]
+  http_schemes: [bearer]
+  oauth2_flows: [deviceCode]
+schemes:
+  - name: BearerToken
+    type: http
+    scheme: bearer
+    location: header
+    header: Authorization
+    format: "Authorization: Bearer <api-token>"
+    issued_via:
+      - POST /api/orgs/{slug}/keys       # create_key (org-scoped API key)
+      - POST /api/org/keys               # create_current_org_key
+    used_by:
+      - POST /v1/compact                 # inference compaction (Pro) / drain (Free)
+      - GET  /v1/whoami
+    docs: https://codag.ai/docs/rest-api.html
+  - name: OAuthDeviceFlow
+    type: oauth2
+    flow: deviceCode
+    device_authorization_endpoint: https://api.codag.ai/oauth/device/code
+    token_endpoint: https://api.codag.ai/oauth/token
+    used_by:
+      - codag auth login (CLI)
+    notes: RFC 8628 device authorization grant used by the codag CLI to obtain tokens.
+  - name: GoogleSignIn
+    type: openIdConnect
+    provider: google
+    used_by:
+      - POST /api/auth/google            # google_login (console/web session)
+      - POST /api/auth/console-session   # mint_console_session
+  - name: AnonymousToken
+    type: http
+    scheme: bearer
+    issued_via:
+      - POST /v1/anonymous/token         # anonymous_token_endpoint
+    notes: Short-lived anonymous token for trial / unauthenticated free usage.
+unauthenticated:
+  - POST /v1/free/compact                # deterministic drain compaction, no auth
+  - GET  /health
