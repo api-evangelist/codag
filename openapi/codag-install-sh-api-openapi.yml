@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Install.sh API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Install.sh
+paths:
+  /install.sh:
+    get:
+      summary: Install Script Redirect
+      description: Count install-script starts, then redirect to the current installer.
+      operationId: install_script_redirect_install_sh_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Install.sh

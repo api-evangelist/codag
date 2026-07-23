@@ -1,0 +1,317 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Compact API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Compact
+paths:
+  /v1/compact:
+    post:
+      summary: Compact Endpoint
+      operationId: compact_endpoint_v1_compact_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapsuleRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompactResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Compact
+  /v1/compact/jobs:
+    post:
+      summary: Compact Job Create Endpoint
+      operationId: compact_job_create_endpoint_v1_compact_jobs_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapsuleRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompactJobCreateResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Compact
+  /v1/compact/jobs/{job_id}:
+    get:
+      summary: Compact Job Get Endpoint
+      operationId: compact_job_get_endpoint_v1_compact_jobs__job_id__get
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Job Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompactJobResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Compact
+components:
+  schemas:
+    CompactResponse:
+      properties:
+        text:
+          type: string
+          title: Text
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+        compact_engine:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Engine
+        compact_fallback:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Fallback
+        compact_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Error
+      type: object
+      required:
+      - text
+      - stats
+      title: CompactResponse
+    CompactJobResponse:
+      properties:
+        job_id:
+          type: string
+          title: Job Id
+        status:
+          type: string
+          title: Status
+        text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Text
+        stats:
+          anyOf:
+          - $ref: '#/components/schemas/ParseStats'
+          - type: 'null'
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - job_id
+      - status
+      title: CompactJobResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ParseStats:
+      properties:
+        llm_calls:
+          type: integer
+          title: Llm Calls
+        cache_hits:
+          type: integer
+          title: Cache Hits
+        unmatched:
+          type: integer
+          title: Unmatched
+        elapsed_ms:
+          type: integer
+          title: Elapsed Ms
+        incident_family_hits:
+          type: integer
+          title: Incident Family Hits
+          default: 0
+        incident_induced_templates:
+          type: integer
+          title: Incident Induced Templates
+          default: 0
+        global_cache_hits:
+          type: integer
+          title: Global Cache Hits
+          default: 0
+        global_shadow_hits:
+          type: integer
+          title: Global Shadow Hits
+          default: 0
+        global_shadow_agreements:
+          type: integer
+          title: Global Shadow Agreements
+          default: 0
+        global_shadow_disagreements:
+          type: integer
+          title: Global Shadow Disagreements
+          default: 0
+        total_patterns:
+          type: integer
+          title: Total Patterns
+          default: 0
+        candidate_patterns:
+          type: integer
+          title: Candidate Patterns
+          default: 0
+        dropped_patterns:
+          type: integer
+          title: Dropped Patterns
+          default: 0
+        cache_pattern_hits:
+          type: integer
+          title: Cache Pattern Hits
+          default: 0
+        global_cache_pattern_hits:
+          type: integer
+          title: Global Cache Pattern Hits
+          default: 0
+      type: object
+      required:
+      - llm_calls
+      - cache_hits
+      - unmatched
+      - elapsed_ms
+      title: ParseStats
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LineRecord:
+      properties:
+        line_id:
+          type: integer
+          title: Line Id
+        message:
+          type: string
+          maxLength: 262144
+          title: Message
+        level:
+          anyOf:
+          - type: string
+            maxLength: 32
+          - type: 'null'
+          title: Level
+        timestamp:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Timestamp
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+      type: object
+      required:
+      - line_id
+      - message
+      title: LineRecord
+      description: One log record with metadata for capsule construction.
+    CompactJobCreateResponse:
+      properties:
+        job_id:
+          type: string
+          title: Job Id
+        status:
+          type: string
+          title: Status
+        poll_url:
+          type: string
+          title: Poll Url
+      type: object
+      required:
+      - job_id
+      - status
+      - poll_url
+      title: CompactJobCreateResponse
+    CapsuleRequest:
+      properties:
+        lines:
+          items:
+            $ref: '#/components/schemas/LineRecord'
+          type: array
+          maxItems: 1000000
+          title: Lines
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        engine:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - inference
+            - deterministic
+          - type: 'null'
+          title: Engine
+      type: object
+      required:
+      - lines
+      title: CapsuleRequest

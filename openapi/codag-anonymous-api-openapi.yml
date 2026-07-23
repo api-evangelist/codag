@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Anonymous API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Anonymous
+paths:
+  /v1/anonymous/token:
+    post:
+      summary: Anonymous Token Endpoint
+      description: Mint a server-side anonymous token for free hosted compact calls.
+      operationId: anonymous_token_endpoint_v1_anonymous_token_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnonymousTokenResponse'
+      tags:
+      - Anonymous
+components:
+  schemas:
+    AnonymousTokenResponse:
+      properties:
+        token:
+          type: string
+          title: Token
+        token_type:
+          type: string
+          title: Token Type
+          default: Bearer
+      type: object
+      required:
+      - token
+      title: AnonymousTokenResponse

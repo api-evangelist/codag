@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Cli API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Cli
+paths:
+  /api/cli/confirm:
+    post:
+      summary: Cli Confirm
+      description: 'Browser → server: ''I''m signed in, please link this user_code to me + org X''.'
+      operationId: cli_confirm_api_cli_confirm_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CLIConfirmRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CLIConfirmResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Cli
+  /api/cli/deny:
+    post:
+      summary: Cli Deny
+      description: 'Browser → server: ''user clicked Deny on the /cli-auth page''.'
+      operationId: cli_deny_api_cli_deny_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CLIConfirmRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CLIConfirmResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Cli
+components:
+  schemas:
+    CLIConfirmResponse:
+      properties:
+        ok:
+          type: boolean
+          title: Ok
+        user_code:
+          type: string
+          title: User Code
+        org:
+          type: string
+          title: Org
+      type: object
+      required:
+      - ok
+      - user_code
+      - org
+      title: CLIConfirmResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CLIConfirmRequest:
+      properties:
+        user_code:
+          type: string
+          maxLength: 10
+          minLength: 8
+          title: User Code
+        org_id:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 1
+          - type: 'null'
+          title: Org Id
+        org_slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 1
+          - type: 'null'
+          title: Org Slug
+      type: object
+      required:
+      - user_code
+      title: CLIConfirmRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

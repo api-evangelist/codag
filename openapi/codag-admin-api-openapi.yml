@@ -1,0 +1,159 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Admin API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Admin
+paths:
+  /api/admin/activation-codes:
+    get:
+      summary: List Activation Codes
+      operationId: list_activation_codes_api_admin_activation_codes_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response List Activation Codes Api Admin Activation Codes Get
+      tags:
+      - Admin
+    post:
+      summary: Create Activation Code
+      operationId: create_activation_code_api_admin_activation_codes_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateActivationCodeRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Create Activation Code Api Admin Activation Codes Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+  /api/admin/activation-codes/{code_id}:
+    delete:
+      summary: Revoke Activation Code
+      operationId: revoke_activation_code_api_admin_activation_codes__code_id__delete
+      parameters:
+      - name: code_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Code Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Revoke Activation Code Api Admin Activation Codes  Code Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Admin
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateActivationCodeRequest:
+      properties:
+        label:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Label
+        kind:
+          type: string
+          pattern: ^(trial|team_annual_deal)$
+          title: Kind
+          default: trial
+        trial_days:
+          type: integer
+          maximum: 365.0
+          minimum: 1.0
+          title: Trial Days
+          default: 14
+        max_redemptions:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Max Redemptions
+        expires_in_days:
+          anyOf:
+          - type: integer
+            maximum: 365.0
+            minimum: 1.0
+          - type: 'null'
+          title: Expires In Days
+        code:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 3
+            pattern: ^[A-Za-z0-9_-]+$
+          - type: 'null'
+          title: Code
+      type: object
+      title: CreateActivationCodeRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

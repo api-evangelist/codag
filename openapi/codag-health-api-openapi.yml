@@ -1,0 +1,40 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Health API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Health
+paths:
+  /health:
+    get:
+      summary: Health
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+      tags:
+      - Health
+components:
+  schemas:
+    HealthResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+        model:
+          type: string
+          title: Model
+        cache_size:
+          type: integer
+          title: Cache Size
+      type: object
+      required:
+      - status
+      - model
+      - cache_size
+      title: HealthResponse

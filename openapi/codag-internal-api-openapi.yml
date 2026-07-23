@@ -1,0 +1,134 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Internal API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Internal
+paths:
+  /internal/notifications/run:
+    post:
+      summary: Internal Notifications Run
+      description: 'Secret-gated trigger for the email engine (spike alerts + weekly digest).
+
+        Wire a daily cron to POST here with `X-Cron-Secret`. `dry_run` defaults True
+
+        (computes and returns what it *would* send, emails nobody).'
+      operationId: internal_notifications_run_internal_notifications_run_post
+      parameters:
+      - name: kind
+        in: query
+        required: false
+        schema:
+          type: string
+          default: all
+          title: Kind
+      - name: dry_run
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: true
+          title: Dry Run
+      - name: org_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Internal Notifications Run Internal Notifications Run Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Internal
+  /internal/training-pairs/export:
+    get:
+      summary: Export Training Pairs
+      description: 'Secret-gated JSONL export of the frontier distillation corpus
+
+        (`frontier_training_pairs`). A scheduled job snapshots this to the
+
+        `codag-training-data` Modal volume so the LoRA v4 corpus is not captive
+
+        to the prod database. Cursor via `since_id`; rows are append-only.'
+      operationId: export_training_pairs_internal_training_pairs_export_get
+      parameters:
+      - name: since_id
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Since Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50000
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Internal
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

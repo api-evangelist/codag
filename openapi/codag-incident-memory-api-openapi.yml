@@ -1,0 +1,383 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Incident Memory API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Incident Memory
+paths:
+  /v1/incident-memory/search:
+    post:
+      summary: Incident Memory Search Endpoint
+      operationId: incident_memory_search_endpoint_v1_incident_memory_search_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IncidentMemorySearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentMemorySearchResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Incident Memory
+  /v1/incident-memory/{incident_id}:
+    get:
+      summary: Incident Memory Detail Endpoint
+      operationId: incident_memory_detail_endpoint_v1_incident_memory__incident_id__get
+      parameters:
+      - name: incident_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Incident Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentMemoryGraphResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Incident Memory
+    delete:
+      summary: Incident Memory Delete Endpoint
+      operationId: incident_memory_delete_endpoint_v1_incident_memory__incident_id__delete
+      parameters:
+      - name: incident_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Incident Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Incident Memory Delete Endpoint V1 Incident Memory  Incident Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Incident Memory
+  /v1/incident-memory/{incident_id}/raw:
+    get:
+      summary: Incident Memory Raw Endpoint
+      operationId: incident_memory_raw_endpoint_v1_incident_memory__incident_id__raw_get
+      parameters:
+      - name: incident_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Incident Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncidentRawLogsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Incident Memory
+components:
+  schemas:
+    IncidentMemorySummary:
+      properties:
+        incident_id:
+          type: string
+          title: Incident Id
+        request_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Request Id
+        endpoint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Endpoint
+        family_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Family Id
+        fingerprint:
+          type: string
+          title: Fingerprint
+        detected:
+          type: boolean
+          title: Detected
+        type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Type
+        severity:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Severity
+        service:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Service
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source
+        start_ts:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Start Ts
+        end_ts:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: End Ts
+        line_count_in:
+          type: integer
+          title: Line Count In
+          default: 0
+        token_count_in:
+          type: integer
+          title: Token Count In
+          default: 0
+        token_count_out:
+          type: integer
+          title: Token Count Out
+          default: 0
+        compression_ratio:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Compression Ratio
+        created_at:
+          title: Created At
+        affected_services:
+          items:
+            type: string
+          type: array
+          title: Affected Services
+        root_cause_hypotheses:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Root Cause Hypotheses
+        evidence_preview:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Evidence Preview
+      type: object
+      required:
+      - incident_id
+      - fingerprint
+      - detected
+      title: IncidentMemorySummary
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    IncidentMemorySearchResponse:
+      properties:
+        incidents:
+          items:
+            $ref: '#/components/schemas/IncidentMemorySummary'
+          type: array
+          title: Incidents
+      type: object
+      required:
+      - incidents
+      title: IncidentMemorySearchResponse
+    IncidentMemoryGraphResponse:
+      properties:
+        incident:
+          $ref: '#/components/schemas/IncidentMemorySummary'
+        capsule:
+          additionalProperties: true
+          type: object
+          title: Capsule
+        compact_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Text
+        summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Summary
+      type: object
+      required:
+      - incident
+      - capsule
+      title: IncidentMemoryGraphResponse
+    IncidentMemorySearchRequest:
+      properties:
+        q:
+          anyOf:
+          - type: string
+            maxLength: 512
+          - type: 'null'
+          title: Q
+        incident_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Incident Id
+        fingerprint:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Fingerprint
+        family_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Family Id
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+        source:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Source
+        incident_type:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Incident Type
+        severity:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Severity
+        template_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Template Id
+        role:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Role
+        detected:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Detected
+        limit:
+          type: integer
+          maximum: 100.0
+          minimum: 1.0
+          title: Limit
+          default: 20
+      type: object
+      title: IncidentMemorySearchRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    IncidentRawLogsResponse:
+      properties:
+        incident_id:
+          type: string
+          title: Incident Id
+        available:
+          type: boolean
+          title: Available
+          default: false
+        lines:
+          items:
+            type: string
+          type: array
+          title: Lines
+        line_count:
+          type: integer
+          title: Line Count
+          default: 0
+        truncated:
+          type: boolean
+          title: Truncated
+          default: false
+      type: object
+      required:
+      - incident_id
+      title: IncidentRawLogsResponse
+      description: Exact original input lines for an incident (admin on-demand viewer).

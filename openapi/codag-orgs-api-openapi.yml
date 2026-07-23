@@ -1,0 +1,719 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Orgs API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Orgs
+paths:
+  /api/orgs:
+    get:
+      summary: List My Orgs
+      operationId: list_my_orgs_api_orgs_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response List My Orgs Api Orgs Get
+      tags:
+      - Orgs
+    post:
+      summary: Create Org
+      description: 'Create an org. Global admin only.
+
+
+        The admin is added as `owner` so they can manage members/keys via the UI.'
+      operationId: create_org_api_orgs_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrgRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Create Org Api Orgs Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/self-serve:
+    post:
+      summary: Self Serve Create Org
+      description: 'Create the caller''s first org.
+
+
+        Workspace-domain signup (alice@acme.com) can call this with no body —
+
+        we title-case the domain label into a default name ("Acme") and slug.
+
+
+        Consumer-domain signup (michael@gmail.com) must supply `{name, slug}`
+
+        explicitly; calling with no body returns `409 name_required` so the
+
+        console can render its FirstOrgForm prompt instead of inflicting
+
+        "Gmail" on the user.
+
+
+        Allowed only when the caller has zero existing memberships; subsequent
+
+        org creation goes through `POST /api/admin/orgs`.
+
+
+        Idempotency: a Postgres TRANSACTION-scoped advisory lock keyed on
+
+        user_id serializes concurrent self-serve calls. (We deliberately do
+
+        NOT use the session-scoped pg_advisory_lock — on a pooled connection a
+
+        session lock leaks across requests.)'
+      operationId: self_serve_create_org_api_orgs_self_serve_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/SelfServeCreateRequest'
+              - type: 'null'
+              title: Req
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Self Serve Create Org Api Orgs Self Serve Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}:
+    get:
+      summary: Get Org
+      operationId: get_org_api_orgs__slug__get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Org Api Orgs  Slug  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+    patch:
+      summary: Update Org
+      operationId: update_org_api_orgs__slug__patch
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Org Api Orgs  Slug  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/keys:
+    get:
+      summary: List Keys
+      operationId: list_keys_api_orgs__slug__keys_get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Keys Api Orgs  Slug  Keys Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+    post:
+      summary: Create Key
+      operationId: create_key_api_orgs__slug__keys_post
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateKeyRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Create Key Api Orgs  Slug  Keys Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/keys/{key_id}:
+    delete:
+      summary: Revoke Key
+      operationId: revoke_key_api_orgs__slug__keys__key_id__delete
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Key Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Revoke Key Api Orgs  Slug  Keys  Key Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/members:
+    get:
+      summary: List Members
+      operationId: list_members_api_orgs__slug__members_get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Members Api Orgs  Slug  Members Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/members/{user_id}:
+    delete:
+      summary: Remove Member
+      operationId: remove_member_api_orgs__slug__members__user_id__delete
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Remove Member Api Orgs  Slug  Members  User Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/invites:
+    get:
+      summary: List Invites
+      operationId: list_invites_api_orgs__slug__invites_get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response List Invites Api Orgs  Slug  Invites Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+    post:
+      summary: Send Invite
+      operationId: send_invite_api_orgs__slug__invites_post
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInviteRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Send Invite Api Orgs  Slug  Invites Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/invites/{invite_id}:
+    delete:
+      summary: Cancel Invite
+      operationId: cancel_invite_api_orgs__slug__invites__invite_id__delete
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      - name: invite_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Invite Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Cancel Invite Api Orgs  Slug  Invites  Invite Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/invites/{token}/accept:
+    post:
+      summary: Accept Invite
+      operationId: accept_invite_api_orgs_invites__token__accept_post
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Accept Invite Api Orgs Invites  Token  Accept Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/usage/summary:
+    get:
+      summary: Get Usage Summary
+      description: 'Aggregate counters for the dashboard''s headline KPI cards.
+
+
+        Legacy slug route. Console uses `GET /api/org/usage/summary` now (id
+
+        via X-Codag-Org-Id header). Body identical via the shared helper.'
+      operationId: get_usage_summary_api_orgs__slug__usage_summary_get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: month
+          title: Period
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Usage Summary Api Orgs  Slug  Usage Summary Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/{slug}/usage/timeseries:
+    get:
+      summary: Get Usage Timeseries
+      description: Bucketed series for the dashboard's bar chart. Legacy slug route.
+      operationId: get_usage_timeseries_api_orgs__slug__usage_timeseries_get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: 30d
+          title: Period
+      - name: bucket
+        in: query
+        required: false
+        schema:
+          type: string
+          default: day
+          title: Bucket
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Usage Timeseries Api Orgs  Slug  Usage Timeseries Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+  /api/orgs/by-id/{org_id}:
+    get:
+      summary: Get Org By Id Route
+      description: 'Fetch an org by its base62 id.
+
+
+        Used by the console''s switch-org route for global admins jumping to an
+
+        org they aren''t yet a member of. Membership is verified — for non-admin
+
+        callers a 403 falls out of `_require_org_access`.'
+      operationId: get_org_by_id_route_api_orgs_by_id__org_id__get
+      parameters:
+      - name: org_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Org Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Org By Id Route Api Orgs By Id  Org Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Orgs
+components:
+  schemas:
+    UpdateOrgRequest:
+      properties:
+        slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 2
+            pattern: ^[a-z0-9][a-z0-9-]*$
+          - type: 'null'
+          title: Slug
+        name:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Name
+        alerts_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Alerts Enabled
+      type: object
+      title: UpdateOrgRequest
+    CreateOrgRequest:
+      properties:
+        slug:
+          type: string
+          maxLength: 64
+          minLength: 2
+          pattern: ^[a-z0-9][a-z0-9-]*$
+          title: Slug
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - slug
+      - name
+      title: CreateOrgRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SelfServeCreateRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Name
+        slug:
+          anyOf:
+          - type: string
+            maxLength: 48
+            minLength: 2
+            pattern: ^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$
+          - type: 'null'
+          title: Slug
+      type: object
+      title: SelfServeCreateRequest
+      description: 'Optional body for `POST /api/orgs/self-serve`.
+
+
+        Workspace-email signup (alice@acme.com) can omit the body — the server
+
+        title-cases the domain label. Consumer-email signup (michael@gmail.com)
+
+        is rejected (`name_required`) without an explicit body, so the user is
+
+        forced to pick a real name + slug instead of getting "Gmail" inflicted
+
+        on them. `name` and `slug` must be provided together when given.'
+    CreateKeyRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: CreateKeyRequest
+    CreateInviteRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        role:
+          type: string
+          pattern: ^(admin|member)$
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CreateInviteRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

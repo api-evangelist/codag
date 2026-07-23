@@ -1,0 +1,334 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Auth API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Auth
+paths:
+  /api/auth/google:
+    post:
+      summary: Google Login
+      description: 'Exchange a Google authorization code for a session JWT + user/org info.
+
+
+        Signup is open: any Google account can sign in. A first-time user with an
+
+        org invite token joins that org; otherwise they land with no org and the
+
+        console prompts them to create their first org via `POST /api/orgs/self-serve`.'
+      operationId: google_login_api_auth_google_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleAuthResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Auth
+  /api/auth/me:
+    get:
+      summary: Get Me
+      operationId: get_me_api_auth_me_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+      tags:
+      - Auth
+    patch:
+      summary: Update Me
+      operationId: update_me_api_auth_me_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      summary: Logout
+      operationId: logout_api_auth_logout_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Logout Api Auth Logout Post
+      tags:
+      - Auth
+  /api/auth/console-session:
+    post:
+      summary: Mint Console Session
+      description: 'Mint a short-lived browser bearer for direct /v1/* calls.
+
+
+        Authenticated by the user''s session JWT. The returned token carries
+
+        (user_id, org_id, aud=console-v1) and is valid for ~10 min. The browser
+
+        holds it in memory and presents it on POST /v1/compact (and, for admins,
+
+        the deprecated /v1/capsule) direct to the API host (no Vercel proxy on the
+
+        data plane).
+
+
+        Body must specify the target org. Prefer `org_id` (unambiguous);
+
+        `org_slug` is accepted as a one-release deprecation path and is
+
+        resolved against the caller''s memberships only — 409 `slug_ambiguous`
+
+        when the user belongs to ≥2 orgs sharing that slug.'
+      operationId: mint_console_session_api_auth_console_session_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsoleSessionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsoleSessionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Auth
+components:
+  schemas:
+    OrgOut:
+      properties:
+        id:
+          type: string
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        name:
+          type: string
+          title: Name
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      title: OrgOut
+    UserOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        email:
+          type: string
+          title: Email
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
+      type: object
+      required:
+      - id
+      - email
+      title: UserOut
+    GoogleAuthRequest:
+      properties:
+        code:
+          type: string
+          title: Code
+        redirect_uri:
+          type: string
+          title: Redirect Uri
+        org_invite_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Invite Token
+      type: object
+      required:
+      - code
+      - redirect_uri
+      title: GoogleAuthRequest
+    ConsoleSessionRequest:
+      properties:
+        org_id:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 1
+          - type: 'null'
+          title: Org Id
+        org_slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 2
+            pattern: ^[a-z0-9][a-z0-9-]*$
+          - type: 'null'
+          title: Org Slug
+      type: object
+      title: ConsoleSessionRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ConsoleSessionResponse:
+      properties:
+        token:
+          type: string
+          title: Token
+        org_id:
+          type: string
+          title: Org Id
+        org_slug:
+          type: string
+          title: Org Slug
+        expires_at:
+          type: integer
+          title: Expires At
+      type: object
+      required:
+      - token
+      - org_id
+      - org_slug
+      - expires_at
+      title: ConsoleSessionResponse
+    GoogleAuthResponse:
+      properties:
+        access_token:
+          type: string
+          title: Access Token
+        user:
+          $ref: '#/components/schemas/UserOut'
+        orgs:
+          items:
+            $ref: '#/components/schemas/OrgOut'
+          type: array
+          title: Orgs
+        is_global_admin:
+          type: boolean
+          title: Is Global Admin
+        accepted_invite:
+          type: boolean
+          title: Accepted Invite
+          default: false
+      type: object
+      required:
+      - access_token
+      - user
+      - orgs
+      - is_global_admin
+      title: GoogleAuthResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MeResponse:
+      properties:
+        user:
+          $ref: '#/components/schemas/UserOut'
+        orgs:
+          items:
+            $ref: '#/components/schemas/OrgOut'
+          type: array
+          title: Orgs
+        is_global_admin:
+          type: boolean
+          title: Is Global Admin
+      type: object
+      required:
+      - user
+      - orgs
+      - is_global_admin
+      title: MeResponse
+    UpdateProfileRequest:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Name
+      type: object
+      title: UpdateProfileRequest

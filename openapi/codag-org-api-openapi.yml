@@ -1,0 +1,591 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Org API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Org
+paths:
+  /api/org:
+    get:
+      summary: Get Current Org
+      operationId: get_current_org_api_org_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Get Current Org Api Org Get
+      tags:
+      - Org
+    patch:
+      summary: Update Current Org
+      operationId: update_current_org_api_org_patch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrgRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Update Current Org Api Org Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/keys:
+    get:
+      summary: List Current Org Keys
+      operationId: list_current_org_keys_api_org_keys_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response List Current Org Keys Api Org Keys Get
+      tags:
+      - Org
+    post:
+      summary: Create Current Org Key
+      operationId: create_current_org_key_api_org_keys_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateKeyRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Create Current Org Key Api Org Keys Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/keys/{key_id}:
+    delete:
+      summary: Revoke Current Org Key
+      operationId: revoke_current_org_key_api_org_keys__key_id__delete
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Key Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Revoke Current Org Key Api Org Keys  Key Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/members:
+    get:
+      summary: List Current Org Members
+      operationId: list_current_org_members_api_org_members_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response List Current Org Members Api Org Members Get
+      tags:
+      - Org
+  /api/org/members/{user_id}:
+    delete:
+      summary: Remove Current Org Member
+      operationId: remove_current_org_member_api_org_members__user_id__delete
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Remove Current Org Member Api Org Members  User Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/invites:
+    get:
+      summary: List Current Org Invites
+      operationId: list_current_org_invites_api_org_invites_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response List Current Org Invites Api Org Invites Get
+      tags:
+      - Org
+    post:
+      summary: Send Current Org Invite
+      operationId: send_current_org_invite_api_org_invites_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInviteRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Send Current Org Invite Api Org Invites Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/invites/{invite_id}:
+    delete:
+      summary: Cancel Current Org Invite
+      operationId: cancel_current_org_invite_api_org_invites__invite_id__delete
+      parameters:
+      - name: invite_id
+        in: path
+        required: true
+        schema:
+          type: integer
+          title: Invite Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Cancel Current Org Invite Api Org Invites  Invite Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/usage/summary:
+    get:
+      summary: Get Current Org Usage Summary
+      operationId: get_current_org_usage_summary_api_org_usage_summary_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: month
+          title: Period
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Current Org Usage Summary Api Org Usage Summary Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/usage/timeseries:
+    get:
+      summary: Get Current Org Usage Timeseries
+      operationId: get_current_org_usage_timeseries_api_org_usage_timeseries_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: 30d
+          title: Period
+      - name: bucket
+        in: query
+        required: false
+        schema:
+          type: string
+          default: day
+          title: Bucket
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Current Org Usage Timeseries Api Org Usage Timeseries Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/usage/by-dimension:
+    get:
+      summary: Get Current Org Usage By Dimension
+      operationId: get_current_org_usage_by_dimension_api_org_usage_by_dimension_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: month
+          title: Period
+      - name: dimension
+        in: query
+        required: false
+        schema:
+          type: string
+          default: service
+          title: Dimension
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Current Org Usage By Dimension Api Org Usage By Dimension Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/usage/patterns:
+    get:
+      summary: Get Current Org Usage Patterns
+      operationId: get_current_org_usage_patterns_api_org_usage_patterns_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: month
+          title: Period
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 15
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          default: count
+          title: Order
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Current Org Usage Patterns Api Org Usage Patterns Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/incidents/summary:
+    get:
+      summary: Get Current Org Incidents Summary
+      description: 'Per-day incident counts for the console''s Incidents rollup chart.
+
+
+        Reads incident_memory_runs directly (rides ix_incident_memory_runs_org_created).
+
+        No Pro gate: non-Pro orgs simply have no rows.'
+      operationId: get_current_org_incidents_summary_api_org_incidents_summary_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: 30d
+          title: Period
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Current Org Incidents Summary Api Org Incidents Summary Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/usage/efficiency:
+    get:
+      summary: Get Current Org Usage Efficiency
+      operationId: get_current_org_usage_efficiency_api_org_usage_efficiency_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: month
+          title: Period
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Current Org Usage Efficiency Api Org Usage Efficiency Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+  /api/org/usage/new-patterns:
+    get:
+      summary: Get Current Org Usage New Patterns
+      operationId: get_current_org_usage_new_patterns_api_org_usage_new_patterns_get
+      parameters:
+      - name: period
+        in: query
+        required: false
+        schema:
+          type: string
+          default: month
+          title: Period
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 12
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Current Org Usage New Patterns Api Org Usage New Patterns Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Org
+components:
+  schemas:
+    UpdateOrgRequest:
+      properties:
+        slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 2
+            pattern: ^[a-z0-9][a-z0-9-]*$
+          - type: 'null'
+          title: Slug
+        name:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Name
+        alerts_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Alerts Enabled
+      type: object
+      title: UpdateOrgRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateKeyRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: CreateKeyRequest
+    CreateInviteRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        role:
+          type: string
+          pattern: ^(admin|member)$
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CreateInviteRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -1,0 +1,216 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate billing API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: billing
+paths:
+  /api/billing/state:
+    get:
+      tags:
+      - billing
+      summary: Get Billing State
+      description: Snapshot of plan + current-period usage for the dashboard.
+      operationId: get_billing_state_api_billing_state_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingStateResponse'
+  /api/billing/checkout:
+    post:
+      tags:
+      - billing
+      summary: Create Checkout
+      operationId: create_checkout_api_billing_checkout_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/billing/portal:
+    post:
+      tags:
+      - billing
+      summary: Create Portal
+      operationId: create_portal_api_billing_portal_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalResponse'
+  /api/billing/webhooks/stripe:
+    post:
+      tags:
+      - billing
+      summary: Stripe Webhook
+      operationId: stripe_webhook_api_billing_webhooks_stripe_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Stripe Webhook Api Billing Webhooks Stripe Post
+components:
+  schemas:
+    CheckoutRequest:
+      properties:
+        plan:
+          type: string
+          pattern: ^(hobby|team|team_annual)$
+          title: Plan
+        deal_code:
+          anyOf:
+          - type: string
+            maxLength: 64
+          - type: 'null'
+          title: Deal Code
+      type: object
+      required:
+      - plan
+      title: CheckoutRequest
+    CheckoutResponse:
+      properties:
+        checkout_url:
+          type: string
+          title: Checkout Url
+      type: object
+      required:
+      - checkout_url
+      title: CheckoutResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    PortalResponse:
+      properties:
+        portal_url:
+          type: string
+          title: Portal Url
+      type: object
+      required:
+      - portal_url
+      title: PortalResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    BillingStateResponse:
+      properties:
+        plan_tier:
+          type: string
+          title: Plan Tier
+        subscription_status:
+          type: string
+          title: Subscription Status
+        pro_enabled:
+          type: boolean
+          title: Pro Enabled
+        can_manage_billing:
+          type: boolean
+          title: Can Manage Billing
+        monthly_price_cents:
+          type: integer
+          title: Monthly Price Cents
+        monthly_mb_included:
+          type: integer
+          title: Monthly Mb Included
+        overage_per_gb_cents:
+          type: integer
+          title: Overage Per Gb Cents
+        used_bytes:
+          type: integer
+          title: Used Bytes
+        period_start:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Period Start
+        period_end:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Period End
+        trial_ends_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Trial Ends At
+        cancel_at_period_end:
+          type: boolean
+          title: Cancel At Period End
+        has_subscription:
+          type: boolean
+          title: Has Subscription
+          default: false
+        has_customer:
+          type: boolean
+          title: Has Customer
+          default: false
+      type: object
+      required:
+      - plan_tier
+      - subscription_status
+      - pro_enabled
+      - can_manage_billing
+      - monthly_price_cents
+      - monthly_mb_included
+      - overage_per_gb_cents
+      - used_bytes
+      - period_start
+      - period_end
+      - trial_ends_at
+      - cancel_at_period_end
+      title: BillingStateResponse

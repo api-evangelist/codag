@@ -1,0 +1,220 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Parse API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Parse
+paths:
+  /v1/parse:
+    post:
+      summary: Parse Endpoint
+      operationId: parse_endpoint_v1_parse_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      deprecated: true
+      tags:
+      - Parse
+components:
+  schemas:
+    ParseResponse:
+      properties:
+        templates:
+          items:
+            $ref: '#/components/schemas/TemplateOut'
+          type: array
+          title: Templates
+        parsed:
+          items:
+            $ref: '#/components/schemas/ParsedLineOut'
+          type: array
+          title: Parsed
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+      type: object
+      required:
+      - templates
+      - parsed
+      - stats
+      title: ParseResponse
+    ParsedLineOut:
+      properties:
+        line:
+          type: string
+          title: Line
+        template_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Template Id
+        raw_template:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Raw Template
+        cache_hit:
+          type: boolean
+          title: Cache Hit
+          default: false
+      type: object
+      required:
+      - line
+      title: ParsedLineOut
+    TemplateOut:
+      properties:
+        template_id:
+          type: string
+          title: Template Id
+        raw_template:
+          type: string
+          title: Raw Template
+      type: object
+      required:
+      - template_id
+      - raw_template
+      title: TemplateOut
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ParseStats:
+      properties:
+        llm_calls:
+          type: integer
+          title: Llm Calls
+        cache_hits:
+          type: integer
+          title: Cache Hits
+        unmatched:
+          type: integer
+          title: Unmatched
+        elapsed_ms:
+          type: integer
+          title: Elapsed Ms
+        incident_family_hits:
+          type: integer
+          title: Incident Family Hits
+          default: 0
+        incident_induced_templates:
+          type: integer
+          title: Incident Induced Templates
+          default: 0
+        global_cache_hits:
+          type: integer
+          title: Global Cache Hits
+          default: 0
+        global_shadow_hits:
+          type: integer
+          title: Global Shadow Hits
+          default: 0
+        global_shadow_agreements:
+          type: integer
+          title: Global Shadow Agreements
+          default: 0
+        global_shadow_disagreements:
+          type: integer
+          title: Global Shadow Disagreements
+          default: 0
+        total_patterns:
+          type: integer
+          title: Total Patterns
+          default: 0
+        candidate_patterns:
+          type: integer
+          title: Candidate Patterns
+          default: 0
+        dropped_patterns:
+          type: integer
+          title: Dropped Patterns
+          default: 0
+        cache_pattern_hits:
+          type: integer
+          title: Cache Pattern Hits
+          default: 0
+        global_cache_pattern_hits:
+          type: integer
+          title: Global Cache Pattern Hits
+          default: 0
+      type: object
+      required:
+      - llm_calls
+      - cache_hits
+      - unmatched
+      - elapsed_ms
+      title: ParseStats
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ParseRequest:
+      properties:
+        lines:
+          items:
+            type: string
+            maxLength: 262144
+          type: array
+          maxItems: 1000000
+          title: Lines
+          description: Raw log lines to template.
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+          description: Service name the lines come from (e.g. 'payments-api'). Used for per-service breakdowns.
+        source:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Source
+          description: Origin tag for the batch (e.g. 'vercel', 'datadog'). Free-form.
+      type: object
+      required:
+      - lines
+      title: ParseRequest

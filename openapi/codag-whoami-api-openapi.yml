@@ -1,0 +1,69 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Whoami API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Whoami
+paths:
+  /v1/whoami:
+    get:
+      summary: Whoami Endpoint
+      description: 'Return the authenticated user and token-selected org, if any.
+
+
+        Same JWT shape as /api/auth/me — accessible from the CLI via the
+
+        Bearer access_token issued by /oauth/token. Used both as `codag
+
+        whoami` and as the post-login validation step in `codag setup`.'
+      operationId: whoami_endpoint_v1_whoami_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WhoamiResponse'
+      tags:
+      - Whoami
+components:
+  schemas:
+    WhoamiResponse:
+      properties:
+        user_id:
+          type: integer
+          title: User Id
+        email:
+          type: string
+          title: Email
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        org_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Id
+        org_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Name
+        org_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Slug
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+      type: object
+      required:
+      - user_id
+      - email
+      title: WhoamiResponse

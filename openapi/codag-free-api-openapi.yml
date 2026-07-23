@@ -1,0 +1,232 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Free API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Free
+paths:
+  /v1/free/compact:
+    post:
+      summary: Free Compact Endpoint
+      description: 'Anonymous free hosted compression backed by private codag-drain.
+
+
+        This endpoint intentionally avoids the request-scoped DB middleware path.
+
+        It validates/touches the anonymous token with one short checkout, performs
+
+        drain work without holding a connection, then records metadata/archive rows
+
+        in a background task with a separate checkout.'
+      operationId: free_compact_endpoint_v1_free_compact_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapsuleRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompactResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Free
+components:
+  schemas:
+    CompactResponse:
+      properties:
+        text:
+          type: string
+          title: Text
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+        compact_engine:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Engine
+        compact_fallback:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Fallback
+        compact_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Error
+      type: object
+      required:
+      - text
+      - stats
+      title: CompactResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ParseStats:
+      properties:
+        llm_calls:
+          type: integer
+          title: Llm Calls
+        cache_hits:
+          type: integer
+          title: Cache Hits
+        unmatched:
+          type: integer
+          title: Unmatched
+        elapsed_ms:
+          type: integer
+          title: Elapsed Ms
+        incident_family_hits:
+          type: integer
+          title: Incident Family Hits
+          default: 0
+        incident_induced_templates:
+          type: integer
+          title: Incident Induced Templates
+          default: 0
+        global_cache_hits:
+          type: integer
+          title: Global Cache Hits
+          default: 0
+        global_shadow_hits:
+          type: integer
+          title: Global Shadow Hits
+          default: 0
+        global_shadow_agreements:
+          type: integer
+          title: Global Shadow Agreements
+          default: 0
+        global_shadow_disagreements:
+          type: integer
+          title: Global Shadow Disagreements
+          default: 0
+        total_patterns:
+          type: integer
+          title: Total Patterns
+          default: 0
+        candidate_patterns:
+          type: integer
+          title: Candidate Patterns
+          default: 0
+        dropped_patterns:
+          type: integer
+          title: Dropped Patterns
+          default: 0
+        cache_pattern_hits:
+          type: integer
+          title: Cache Pattern Hits
+          default: 0
+        global_cache_pattern_hits:
+          type: integer
+          title: Global Cache Pattern Hits
+          default: 0
+      type: object
+      required:
+      - llm_calls
+      - cache_hits
+      - unmatched
+      - elapsed_ms
+      title: ParseStats
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LineRecord:
+      properties:
+        line_id:
+          type: integer
+          title: Line Id
+        message:
+          type: string
+          maxLength: 262144
+          title: Message
+        level:
+          anyOf:
+          - type: string
+            maxLength: 32
+          - type: 'null'
+          title: Level
+        timestamp:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Timestamp
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+      type: object
+      required:
+      - line_id
+      - message
+      title: LineRecord
+      description: One log record with metadata for capsule construction.
+    CapsuleRequest:
+      properties:
+        lines:
+          items:
+            $ref: '#/components/schemas/LineRecord'
+          type: array
+          maxItems: 1000000
+          title: Lines
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        engine:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - inference
+            - deterministic
+          - type: 'null'
+          title: Engine
+      type: object
+      required:
+      - lines
+      title: CapsuleRequest

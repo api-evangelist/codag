@@ -1,0 +1,204 @@
+openapi: 3.1.0
+info:
+  title: infra-logs templater Activate Onboard API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: Onboard
+paths:
+  /api/onboard/sources:
+    get:
+      summary: Get Onboard Sources
+      description: 'Return per-source warm history for a specific org the caller belongs to.
+
+
+        The dashboard pairs this with its hardcoded source catalog to show
+
+        ''Last warmed: 2h ago, +127 templates'' next to each integration tile.
+
+
+        Prefer `?org_id=<numeric>`. `?slug=<org-slug>` is accepted as a
+
+        one-release deprecation path (resolved against the caller''s
+
+        memberships, 409 `slug_ambiguous` on collision). Without either, we
+
+        return an empty list rather than guessing — guessing leaks data when
+
+        a user belongs to multiple orgs.'
+      operationId: get_onboard_sources_api_onboard_sources_get
+      parameters:
+      - name: org_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Id
+      - name: slug
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Onboard Sources Api Onboard Sources Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Onboard
+  /v1/onboard/warm:
+    post:
+      summary: Warm Endpoint
+      description: 'Bulk pre-warm template_cache from historical user logs.
+
+
+        Reuses pipeline.parse() so persistence (template_cache + incident_families)
+
+        happens through the same ON CONFLICT DO UPDATE path as live /v1/compact
+
+        calls. Idempotent across re-runs. Daily per-org line quota guards against
+
+        runaway LLM cost on a misconfigured client.'
+      operationId: warm_endpoint_v1_onboard_warm_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WarmRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WarmResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Onboard
+components:
+  schemas:
+    WarmResponse:
+      properties:
+        source:
+          type: string
+          title: Source
+        templates_added:
+          type: integer
+          title: Templates Added
+        templates_total:
+          type: integer
+          title: Templates Total
+        lines_processed:
+          type: integer
+          title: Lines Processed
+        llm_calls:
+          type: integer
+          title: Llm Calls
+        cache_hits:
+          type: integer
+          title: Cache Hits
+        elapsed_ms:
+          type: integer
+          title: Elapsed Ms
+        quota_remaining:
+          type: integer
+          title: Quota Remaining
+      type: object
+      required:
+      - source
+      - templates_added
+      - templates_total
+      - lines_processed
+      - llm_calls
+      - cache_hits
+      - elapsed_ms
+      - quota_remaining
+      title: WarmResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WarmRequest:
+      properties:
+        lines:
+          items:
+            type: string
+            maxLength: 262144
+          type: array
+          maxItems: 1000000
+          title: Lines
+          description: Raw log lines to template + persist.
+        source:
+          type: string
+          maxLength: 256
+          title: Source
+          description: Origin tag (vercel, datadog, etc.)
+          default: unknown
+      type: object
+      required:
+      - lines
+      title: WarmRequest
+      description: 'Bulk pre-warm request: ingest historical log lines and persist their
+
+        templates to the org''s `template_cache` so subsequent /v1/compact calls
+
+        hit the regex cache instead of cold-starting the LLM templater.
+
+
+        `source` is a free-form tag (e.g. "vercel", "datadog") echoed back in
+
+        the response and used in server logs for attribution. No semantic
+
+        behavior is keyed off it.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
