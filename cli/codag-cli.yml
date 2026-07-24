@@ -1,0 +1,40 @@
+generated: '2026-07-18'
+method: searched
+source: https://github.com/codag-megalith/codag-cli
+name: codag
+description: >-
+  Open-source (MIT, Go) command-line client and MCP server for Codag — compresses
+  noisy log streams into compact, line-cited incident summaries before they reach
+  an AI agent.
+repository: https://github.com/codag-megalith/codag-cli
+module: github.com/codag-megalith/codag-cli
+latest_version: v0.1.16
+install:
+  - method: script
+    command: curl -fsSL https://codag.ai/install.sh | sh
+    platforms: [macOS, Linux, WSL]
+  - method: go
+    command: go install github.com/codag-megalith/codag-cli@latest
+  - method: source
+    command: git clone https://github.com/codag-megalith/codag-cli && make build
+commands:
+  - name: codag wrap -- <cmd>
+    summary: >-
+      Run a log-producing command, capture its output, compress it, and print the
+      lines that matter to stdout.
+    examples:
+      - codag wrap -- kubectl logs deploy/api --since=1h
+      - codag wrap -- vercel logs <deployment-url>
+      - codag wrap -- aws logs tail /aws/lambda/my-fn --since 1h
+      - codag wrap -- docker compose logs --since 1h
+      - codag wrap -- journalctl -u my-service --since "1 hour ago"
+  - name: codag setup
+    summary: Register the Codag MCP server with a coding agent (Claude Code, Codex, Cursor).
+  - name: codag mcp serve
+    summary: Run the Codag MCP server over stdio.
+  - name: codag auth login | logout | status
+    summary: Manage authentication against the hosted Codag API.
+  - name: codag onboard
+    summary: Pre-warm the template cache for faster first-incident compression.
+  - name: codag completion <shell>
+    summary: Generate shell completion (e.g. bash).

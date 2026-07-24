@@ -1,0 +1,25 @@
+# Codag
+
+> Drop-in log compression for AI agents. Codag cuts oversized infrastructure logs down to the lines that matter, schema-valid, in seconds, so coding agents and LLMs answer from the evidence that matters at a fraction of the tokens and never exhaust their context window.
+
+Codag is a developer tool. Send raw logs over HTTPS, the CLI, or the MCP server, and get back just the lines that matter as schema-valid JSON, where every kept line points to a real log line number, tagged by its role in the incident. Nothing is summarized away and nothing is invented. It works in front of any model: Claude, GPT, Gemini, and local models. PII is redacted before storage. Codag is backed by Y Combinator.
+
+## Product
+- [Overview](https://codag.ai/): What Codag is, the problem it solves, and how the compression pipeline works.
+- [Codag Pro](https://codag.ai/pro): The paid path for large production logs. On LogHub2-scale 1k/10k/100k windows it answered 98-99% of incidents correctly (raw + grep 81-85%) while using 5.9 to 7.5x fewer agent tokens. Logs under 10 lines are returned raw; on errors it falls back to the deterministic drain path.
+- [Benchmarks](https://codag.ai/benchmarks): the hosted paired eval (Codag Pro vs codag-drain vs raw + grep on debugging accuracy and agent tokens at 1k/10k/100k lines) plus the open codag-drain parser benchmark vs Drain3 on LogHub-2.0, with bootstrap 95% confidence intervals.
+- [Pricing](https://codag.ai/pricing): Codag Free, Codag Pro ($19/mo), Team ($199/mo + usage), and Enterprise. Priced by compute, not seats.
+- [Open Source](https://codag.ai/open-source): codag CLI and MCP server, plus codag-visualizer for VS Code. MIT licensed.
+
+## Docs
+- [Documentation](https://codag.ai/docs): Current product state plus quickstart, CLI reference, MCP server, output modes, and REST API.
+- [Install](https://codag.ai/install.sh): `curl -fsSL https://codag.ai/install.sh | sh`
+
+## Company
+- [Vision](https://codag.ai/vision): Why we are building Codag.
+- [Blog](https://codag.ai/blog): Launches and engineering notes.
+- [Support](https://codag.ai/support): Contact channels and FAQ.
+
+## Optional
+- [Privacy](https://codag.ai/privacy): How account and log data are handled.
+- [Terms](https://codag.ai/terms): Terms of service for the API.

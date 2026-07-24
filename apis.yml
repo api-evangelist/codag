@@ -1,7 +1,16 @@
 aid: codag
 name: Codag
-description: Codag is a company surfaced as a portfolio company of y-combinator and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Codag is a Y Combinator (Summer 2026) developer-tools company building drop-in
+  log compression for AI agents. It takes oversized infrastructure logs — from
+  Kubernetes, Docker, AWS CloudWatch, Vercel, Railway, Datadog, Sentry, syslog and
+  unstructured sources — and returns only the lines that matter as schema-valid
+  JSON, ranked into patterns where every kept line cites a real log line number so
+  nothing is summarized away or invented. This lets coding agents like Claude,
+  Codex and Cursor debug from the evidence that matters at roughly 95% fewer tokens
+  without exhausting their context window. Codag ships as a hosted HTTPS API
+  (/v1/compact), an open-source Go CLI, and an MCP server, with a deterministic
+  Rust log-templating engine (codag-drain) as the free/fallback path.
 url: https://raw.githubusercontent.com/api-evangelist/codag/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -9,14 +18,296 @@ x-backed-by:
 - y-combinator
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
-apis: []
+- Developer Tools
+- Logging
+- Observability
+- Log Compression
+- AI Agents
+- MCP
+- LLM Tooling
+- Debugging
+- Y Combinator
+image: https://codag.ai/socialpreview.png
+apis:
+- aid: codag:codag-activate-api
+  name: Codag Activate API
+  description: The Activate API from Codag — 2 operation(s) for activate.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Activate
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-activate-api-openapi.yml
+- aid: codag:codag-admin-api
+  name: Codag Admin API
+  description: The Admin API from Codag — 2 operation(s) for admin.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Admin
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-admin-api-openapi.yml
+- aid: codag:codag-anonymous-api
+  name: Codag Anonymous API
+  description: The Anonymous API from Codag — 1 operation(s) for anonymous.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Anonymous
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-anonymous-api-openapi.yml
+- aid: codag:codag-auth-api
+  name: Codag Auth API
+  description: The Auth API from Codag — 4 operation(s) for auth.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-auth-api-openapi.yml
+- aid: codag:codag-billing-api
+  name: Codag billing API
+  description: The billing API from Codag — 4 operation(s) for billing.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - billing
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-billing-api-openapi.yml
+- aid: codag:codag-capsule-api
+  name: Codag Capsule API
+  description: The Capsule API from Codag — 1 operation(s) for capsule.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Capsule
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-capsule-api-openapi.yml
+- aid: codag:codag-cli-api
+  name: Codag Cli API
+  description: The Cli API from Codag — 2 operation(s) for cli.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Cli
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-cli-api-openapi.yml
+- aid: codag:codag-compact-api
+  name: Codag Compact API
+  description: The Compact API from Codag — 3 operation(s) for compact.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Compact
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-compact-api-openapi.yml
+- aid: codag:codag-free-api
+  name: Codag Free API
+  description: The Free API from Codag — 1 operation(s) for free.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Free
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-free-api-openapi.yml
+- aid: codag:codag-health-api
+  name: Codag Health API
+  description: The Health API from Codag — 1 operation(s) for health.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-health-api-openapi.yml
+- aid: codag:codag-incident-memory-api
+  name: Codag Incident Memory API
+  description: The Incident Memory API from Codag — 3 operation(s) for incident memory.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Incident Memory
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-incident-memory-api-openapi.yml
+- aid: codag:codag-install-sh-api
+  name: Codag Install.sh API
+  description: The Install.sh API from Codag — 1 operation(s) for install.sh.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Install.sh
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-install-sh-api-openapi.yml
+- aid: codag:codag-internal-api
+  name: Codag Internal API
+  description: The Internal API from Codag — 2 operation(s) for internal.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Internal
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-internal-api-openapi.yml
+- aid: codag:codag-oauth-api
+  name: Codag Oauth API
+  description: The Oauth API from Codag — 2 operation(s) for oauth.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-oauth-api-openapi.yml
+- aid: codag:codag-onboard-api
+  name: Codag Onboard API
+  description: The Onboard API from Codag — 2 operation(s) for onboard.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Onboard
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-onboard-api-openapi.yml
+- aid: codag:codag-org-api
+  name: Codag Org API
+  description: The Org API from Codag — 14 operation(s) for org.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Org
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-org-api-openapi.yml
+- aid: codag:codag-orgs-api
+  name: Codag Orgs API
+  description: The Orgs API from Codag — 13 operation(s) for orgs.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Orgs
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-orgs-api-openapi.yml
+- aid: codag:codag-parse-api
+  name: Codag Parse API
+  description: The Parse API from Codag — 1 operation(s) for parse.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Parse
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-parse-api-openapi.yml
+- aid: codag:codag-whoami-api
+  name: Codag Whoami API
+  description: The Whoami API from Codag — 1 operation(s) for whoami.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Whoami
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-whoami-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: AgenticAccess
+  url: agentic-access/codag-agentic-access.yml
+- type: Website
+  url: https://codag.ai/
+- type: DeveloperPortal
+  url: https://codag.ai/docs
+- type: Documentation
+  url: https://codag.ai/docs
+- type: APIReference
+  url: https://codag.ai/docs/rest-api.html
+- type: GettingStarted
+  url: https://codag.ai/docs
+- type: Blog
+  url: https://codag.ai/blog
+- type: Support
+  url: https://codag.ai/support
+- type: Pricing
+  url: https://codag.ai/pricing
+- type: SignUp
+  url: https://console.codag.ai
+- type: TermsOfService
+  url: https://codag.ai/terms
+- type: PrivacyPolicy
+  url: https://codag.ai/privacy
+- type: GitHubOrganization
+  url: https://github.com/codag-megalith
+- type: Packages
+  url: packages/codag-packages.yml
+- type: SDKs
+  url: packages/codag-packages.yml
+- type: CLI
+  url: cli/codag-cli.yml
+- type: MCPServer
+  url: mcp/codag-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/codag-llms.txt
+- type: WellKnown
+  url: well-known/codag-well-known.yml
+- type: SecurityTxt
+  url: well-known/codag-security.txt
+- type: Authentication
+  url: authentication/codag-authentication.yml
+- type: Conventions
+  url: conventions/codag-conventions.yml
+- type: ErrorCatalog
+  url: errors/codag-problem-types.yml
+- type: Conformance
+  url: conformance/codag-conformance.yml
+- type: Lifecycle
+  url: lifecycle/codag-lifecycle.yml
+- type: ChangeLog
+  url: changelog/codag-changelog.yml
+- type: Sandbox
+  url: sandbox/codag-sandbox.yml
+- type: DataModel
+  url: data-model/codag-data-model.yml
+- type: VulnerabilityDisclosure
+  url: security/codag-vulnerability-disclosure.yml
+- type: Security
+  url: https://codag.ai/.well-known/security.txt
+- type: DomainSecurity
+  url: security/codag-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

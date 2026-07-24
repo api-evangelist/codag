@@ -1,0 +1,32 @@
+generated: '2026-07-18'
+method: searched
+status: published
+source: https://codag.ai/docs
+server:
+  name: codag
+  transport: stdio
+  distribution: >-
+    Ships inside the open-source codag CLI (github.com/codag-megalith/codag-cli).
+    Register it with a coding agent via `codag setup`; run it with `codag mcp serve`.
+  install: curl -fsSL https://codag.ai/install.sh | sh
+  clients:
+    - Claude Code
+    - Codex
+    - Cursor
+notes: >-
+  Codag exposes log compression as MCP tools so a coding agent can pull already-
+  compressed, schema-valid, line-cited incident summaries instead of raw logs.
+  Backed by the hosted /v1/compact REST endpoint (Bearer token) for Pro or the
+  deterministic drain path for Free.
+tools:
+  - name: wrap
+    description: >-
+      Run any log-producing command, capture its output, compress it, and return
+      only the lines that matter as ranked patterns with real line numbers.
+    source_operation: openapi/codag-openapi-original.json#compact_endpoint_v1_compact_post
+  - name: tail_kubernetes
+    description: Tail and compress logs from a Kubernetes deployment/pod.
+    source_operation: openapi/codag-openapi-original.json#compact_endpoint_v1_compact_post
+  - name: tail_aws_logs
+    description: Tail and compress an AWS CloudWatch log group.
+    source_operation: openapi/codag-openapi-original.json#compact_endpoint_v1_compact_post

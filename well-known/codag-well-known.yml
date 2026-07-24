@@ -1,0 +1,27 @@
+generated: '2026-07-18'
+method: searched
+source: https://codag.ai/.well-known/
+hosts:
+  - host: https://codag.ai
+    documents:
+      - path: /.well-known/security.txt          # RFC 9116
+        status: 200
+        file: codag-security.txt
+      - path: /llms.txt                          # llms.txt (not under /.well-known/, saved in llms/)
+        status: 200
+        file: ../llms/codag-llms.txt
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+  - host: https://api.codag.ai
+    documents:
+      - path: /openapi.json                      # live OpenAPI 3.1.0 (saved in openapi/)
+        status: 200
+        file: ../openapi/codag-openapi-original.json
+      - path: /.well-known/security.txt
+        status: 404

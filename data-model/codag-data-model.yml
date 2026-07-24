@@ -1,0 +1,74 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/codag-openapi-original.json
+notes: >-
+  Entity graph derived from the OpenAPI component schemas and the /api/orgs/*,
+  /api/org/*, and /v1/incident-memory/* operation paths. Org is the tenant root;
+  users belong to orgs through membership; API keys, invites, usage and incident
+  memory hang off the org.
+entities:
+  - name: Org
+    schema: OrgOut
+    id_field: id
+    key_fields: [id, slug, name, role]
+    root: true
+  - name: User
+    schema: UserOut
+    id_field: id
+  - name: Me
+    schema: MeResponse
+    notes: The authenticated user profile (GET /api/auth/me).
+  - name: ApiKey
+    created_by: CreateKeyRequest
+    notes: Org-scoped API key (POST /api/orgs/{slug}/keys, POST /api/org/keys).
+  - name: Invite
+    created_by: CreateInviteRequest
+    notes: Org membership invite (send / accept / cancel).
+  - name: ActivationCode
+    created_by: CreateActivationCodeRequest
+    redeemed_by: RedeemActivationRequest
+  - name: Incident
+    schema: IncidentMemorySummary
+    id_field: incident_id
+    notes: Compressed-log incident memory (/v1/incident-memory/*).
+  - name: Template
+    schema: TemplateOut
+    notes: A drain log template group (ParseResponse.templates).
+  - name: LineRecord
+    schema: LineRecord
+    id_field: line_id
+  - name: CompactResult
+    schema: CompactResponse
+  - name: BillingState
+    schema: BillingStateResponse
+relationships:
+  - from: Org
+    to: ApiKey
+    type: has_many
+    via: slug
+  - from: Org
+    to: User
+    type: has_many
+    via: members
+  - from: Org
+    to: Invite
+    type: has_many
+    via: slug
+  - from: Org
+    to: Incident
+    type: has_many
+    via: org
+  - from: Org
+    to: BillingState
+    type: has_one
+  - from: Incident
+    to: LineRecord
+    type: has_many
+    via: incident_id
+  - from: ParseResponse
+    to: Template
+    type: has_many
+  - from: User
+    to: Org
+    type: belongs_to
+    via: role

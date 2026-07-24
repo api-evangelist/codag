@@ -1,0 +1,5 @@
+Contact: mailto:michael@codag.ai
+Policy: https://codag.ai/support.html
+Preferred-Languages: en
+Canonical: https://codag.ai/.well-known/security.txt
+Expires: 2027-05-24T00:00:00Z

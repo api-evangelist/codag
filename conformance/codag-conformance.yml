@@ -1,0 +1,31 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/codag-openapi-original.json
+standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: 'openapi.json declares "openapi": "3.1.0"'
+  - id: oauth2-device-flow
+    conforms: true
+    evidence: /oauth/device/code + /oauth/token implement the RFC 8628 device authorization grant
+  - id: oidc-google
+    conforms: true
+    evidence: /api/auth/google performs Google (OIDC) sign-in for console sessions
+  - id: bearer-token-auth
+    conforms: true
+    evidence: 'REST API docs specify Authorization Bearer <api-token> for /v1/compact'
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: errors are application/json HTTPValidationError, not application/problem+json
+  - id: rfc9116-security-txt
+    conforms: true
+    evidence: valid /.well-known/security.txt published at codag.ai
+  - id: model-context-protocol
+    conforms: true
+    evidence: ships an MCP server (`codag mcp serve`) with wrap / tail_* tools
+  - id: json-api
+    conforms: false
+  - id: fhir
+    conforms: false
+  - id: scim
+    conforms: false

@@ -1,0 +1,39 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/codag-openapi-original.json
+format: fastapi-validation
+notes: >-
+  Derived from the live OpenAPI. The API is FastAPI-generated and does not use
+  RFC 9457 application/problem+json; error responses are application/json. The only
+  error status enumerated in the spec is 422 (request validation), returned on 55
+  of the operations with the HTTPValidationError envelope. Auth failures (401/403),
+  quota (402/429), and not-found (404) are enforced at runtime but not declared in
+  the spec, so they are listed here as documented-but-unspecified.
+error_envelope:
+  schema: HTTPValidationError
+  shape: '{ "detail": [ { "loc": [...], "msg": "...", "type": "..." } ] }'
+problems:
+  - status: 422
+    title: Unprocessable Entity (request validation failed)
+    schema: HTTPValidationError
+    content_type: application/json
+    specified: true
+    remediation: >-
+      Fix the offending field(s) named in detail[].loc; detail[].msg / detail[].type
+      describe the validation failure.
+  - status: 401
+    title: Unauthorized (missing or invalid Bearer token)
+    specified: false
+    remediation: "Provide a valid `Authorization: Bearer <api-token>` header."
+  - status: 402
+    title: Payment Required / quota exhausted
+    specified: false
+    remediation: >-
+      Monthly compaction quota exceeded on the current plan; upgrade at
+      https://console.codag.ai or wait for the quota to reset.
+  - status: 404
+    title: Not Found
+    specified: false
+  - status: 429
+    title: Too Many Requests (rate limited)
+    specified: false

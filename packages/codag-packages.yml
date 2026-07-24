@@ -1,0 +1,32 @@
+generated: '2026-07-18'
+method: searched
+source: https://codag.ai/open-source
+packages:
+  - language: go
+    registry: pkg.go.dev
+    name: github.com/codag-megalith/codag-cli
+    url: https://github.com/codag-megalith/codag-cli
+    install: go install github.com/codag-megalith/codag-cli@latest
+    official: true
+    notes: >-
+      Open-source (MIT) command-line client and MCP server for compressing logs
+      before they reach an AI agent. Also installable via the hosted script:
+      curl -fsSL https://codag.ai/install.sh | sh
+  - language: rust
+    registry: github
+    name: codag-drain
+    url: https://github.com/codag-megalith/codag-drain
+    install: git clone https://github.com/codag-megalith/codag-drain
+    official: true
+    notes: >-
+      MIT-licensed deterministic log-templating engine — the base layer that
+      turns raw log lines into template groups (the Codag Free / fallback path).
+  - language: typescript
+    registry: vscode-marketplace
+    name: codag-visualizer
+    url: https://github.com/michaelzixizhou/codag
+    install: Install "codag-visualizer" from the VS Code Extension Marketplace
+    official: true
+    notes: >-
+      Interactive workflow / log-pattern visualization extension for VS Code
+      (500+ GitHub stars).

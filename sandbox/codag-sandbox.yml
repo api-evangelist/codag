@@ -1,0 +1,17 @@
+generated: '2026-07-18'
+method: searched
+source: https://codag.ai/docs/rest-api.html
+notes: >-
+  Codag has no separate test-vs-live key system. Instead it exposes an
+  unauthenticated free path and a short-lived anonymous token so a developer or
+  agent can exercise compaction before creating an account. No magic/fixture test
+  values are published (real log lines are the input). PII is redacted before storage.
+free_path:
+  endpoint: POST https://api.codag.ai/v1/free/compact
+  auth: none
+  engine: deterministic drain (codag-drain)
+  quota: 20 MB / month on the free tier
+anonymous_token:
+  endpoint: POST https://api.codag.ai/v1/anonymous/token
+  purpose: short-lived token for trial / unauthenticated usage
+console: https://console.codag.ai

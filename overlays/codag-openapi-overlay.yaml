@@ -1,0 +1,26 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Codag
+  version: 1.0.0
+extends: openapi/codag-openapi-original.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: codag
+      x-apievangelist-rating-notes: >-
+        Live OpenAPI 3.1.0 harvested from https://api.codag.ai/openapi.json. The
+        original title is the internal service name "infra-logs templater"; the
+        public product is "Codag — log compression for AI agents".
+  - target: $
+    update:
+      servers:
+        - url: https://api.codag.ai
+          description: >-
+            Production API base (added by API Evangelist; the harvested spec omits
+            servers[]). Confirmed against live /v1/free/compact and /openapi.json.
+  - target: $.info
+    update:
+      x-apievangelist-auth: >-
+        Bearer API token (Authorization: Bearer <api-token>) on /v1/compact; the
+        harvested spec declares no components.securitySchemes. OAuth 2.0 device
+        flow (/oauth/device/code + /oauth/token) is used by the CLI.

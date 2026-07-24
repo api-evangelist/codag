@@ -1,0 +1,27 @@
+generated: '2026-07-18'
+method: searched
+source: https://github.com/codag-megalith/codag-cli/releases
+scheme: semver
+subject: codag CLI + MCP server
+current_version: v0.1.16
+notes: >-
+  Codag publishes no dedicated product changelog page; the codag CLI GitHub
+  releases are the dated release record for the client + MCP server. The hosted
+  API version reports as 0.1.0 in openapi.json (info.version).
+entries:
+  - version: v0.1.16
+    date: '2026-07-13'
+  - version: v0.1.15
+    date: '2026-07-13'
+  - version: v0.1.14
+    date: '2026-07-13'
+  - version: v0.1.13
+    date: '2026-07-02'
+  - version: v0.1.12
+    date: '2026-06-29'
+  - version: v0.1.11
+    date: '2026-06-19'
+  - version: v0.1.10
+    date: '2026-05-24'
+  - version: v0.1.9
+    date: '2026-05-24'

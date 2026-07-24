@@ -1,0 +1,35 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/codag-openapi-original.json
+docs: https://codag.ai/docs
+authentication:
+  style: bearer-token
+  header: 'Authorization: Bearer <api-token>'
+  ref: authentication/codag-authentication.yml
+versioning:
+  style: uri-path
+  public_prefix: /v1
+  account_prefix: /api
+  ref: lifecycle/codag-lifecycle.yml
+idempotency:
+  client_key_supported: false
+  notes: >-
+    No client-supplied Idempotency-Key header contract. Certain account operations
+    describe server-side idempotency in the spec (activation-code redemption is
+    idempotent per (code, org); self-serve org creation is idempotent across
+    re-runs), but the public compaction endpoints do not accept an idempotency key.
+pagination:
+  style: none-standardized
+  notes: >-
+    List endpoints (orgs, keys, members, invites) return arrays; usage timeseries
+    endpoints take time-window/dimension query params rather than cursor pagination.
+error_envelope:
+  format: fastapi-validation
+  shape: '{ "detail": [ { "loc": [...], "msg": "...", "type": "..." } ] }'
+  ref: errors/codag-problem-types.yml
+content_type: application/json
+request_tracing:
+  request_id_header: null
+rate_limit_signal:
+  documented: false
+  notes: Plans are quota-based (MB/GB per month); no documented per-request rate-limit headers.

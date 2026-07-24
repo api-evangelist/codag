@@ -1,0 +1,20 @@
+generated: '2026-07-18'
+method: generated
+source: openapi/codag-openapi-original.json
+skills:
+  - file: codag-compact-logs.md
+    name: Compress logs for an AI agent with Codag
+    api: openapi/codag-openapi-original.json
+    operations:
+      - free_compact_endpoint_v1_free_compact_post
+      - compact_endpoint_v1_compact_post
+      - anonymous_token_endpoint_v1_anonymous_token_post
+      - whoami_endpoint_v1_whoami_get
+  - file: codag-manage-org-keys.md
+    name: Provision and rotate Codag org API keys
+    api: openapi/codag-openapi-original.json
+    operations:
+      - get_current_org_api_org_get
+      - list_current_org_keys_api_org_keys_get
+      - create_current_org_key_api_org_keys_post
+      - revoke_current_org_key_api_org_keys__key_id__delete
