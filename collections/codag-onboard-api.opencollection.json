@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Onboard API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Onboard",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Onboard Sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/onboard/sources",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Return per-source warm history for a specific org the caller belongs to.\n\nThe dashboard pairs this with its hardcoded source catalog to show\n'Last warmed: 2h ago, +127 templates' next to each integration tile.\n\nPrefer `?org_id=<numeric>`. `?slug=<org-slug>` is accepted as a\none-release deprecation path (resolved against the caller's\nmemberships, 409 `slug_ambiguous` on collision). Without either, we\nreturn an empty list rather than guessing — guessing leaks data when\na user belongs to multiple o"
+        },
+        {
+          "info": {
+            "name": "Warm Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/onboard/warm",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk pre-warm template_cache from historical user logs.\n\nReuses pipeline.parse() so persistence (template_cache + incident_families)\nhappens through the same ON CONFLICT DO UPDATE path as live /v1/compact\ncalls. Idempotent across re-runs. Daily per-org line quota guards against\nrunaway LLM cost on a misconfigured client."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Admin API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Admin",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Activation Codes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/activation-codes"
+          },
+          "docs": "List Activation Codes"
+        },
+        {
+          "info": {
+            "name": "Create Activation Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/admin/activation-codes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Activation Code"
+        },
+        {
+          "info": {
+            "name": "Revoke Activation Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/admin/activation-codes/:code_id",
+            "params": [
+              {
+                "name": "code_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revoke Activation Code"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

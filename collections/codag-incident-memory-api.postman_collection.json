@@ -1,0 +1,568 @@
+{
+  "item": [
+    {
+      "id": "a068c19d-2e3c-4dd6-a097-a5cc7f2bcd37",
+      "name": "Incident Memory",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f06fc882-90ad-462e-9402-25c446d6427c",
+          "name": "Incident Memory Search Endpoint",
+          "request": {
+            "name": "Incident Memory Search Endpoint",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "incident-memory",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"q\": \"<string>\",\n  \"incident_id\": \"<string>\",\n  \"fingerprint\": \"<string>\",\n  \"family_id\": \"<string>\",\n  \"service\": \"<string>\",\n  \"source\": \"<string>\",\n  \"incident_type\": \"<string>\",\n  \"severity\": \"<string>\",\n  \"template_id\": \"<string>\",\n  \"role\": \"<string>\",\n  \"detected\": \"<boolean>\",\n  \"limit\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "33bd0c1f-703c-4ca2-9d7f-e7e6004a57d3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"q\": \"<string>\",\n  \"incident_id\": \"<string>\",\n  \"fingerprint\": \"<string>\",\n  \"family_id\": \"<string>\",\n  \"service\": \"<string>\",\n  \"source\": \"<string>\",\n  \"incident_type\": \"<string>\",\n  \"severity\": \"<string>\",\n  \"template_id\": \"<string>\",\n  \"role\": \"<string>\",\n  \"detected\": \"<boolean>\",\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"incidents\": [\n    {\n      \"incident_id\": \"string\",\n      \"fingerprint\": \"string\",\n      \"detected\": true,\n      \"request_id\": \"string\",\n      \"endpoint\": \"string\",\n      \"family_id\": \"string\",\n      \"type\": \"string\",\n      \"severity\": \"string\",\n      \"service\": \"string\",\n      \"source\": \"string\",\n      \"start_ts\": \"string\",\n      \"end_ts\": \"string\",\n      \"line_count_in\": 0,\n      \"token_count_in\": 0,\n      \"token_count_out\": 0,\n      \"compression_ratio\": 261.64230532508157,\n      \"created_at\": {},\n      \"affected_services\": [\n        \"string\",\n        \"string\"\n      ],\n      \"root_cause_hypotheses\": [\n        {\n          \"key_0\": 4637\n        },\n        {\n          \"key_0\": true,\n          \"key_1\": false\n        }\n      ],\n      \"evidence_preview\": [\n        {\n          \"key_0\": true,\n          \"key_1\": \"string\"\n        },\n        {\n          \"key_0\": true\n        }\n      ]\n    },\n    {\n      \"incident_id\": \"string\",\n      \"fingerprint\": \"string\",\n      \"detected\": true,\n      \"request_id\": \"string\",\n      \"endpoint\": \"string\",\n      \"family_id\": \"string\",\n      \"type\": \"string\",\n      \"severity\": \"string\",\n      \"service\": \"string\",\n      \"source\": \"string\",\n      \"start_ts\": \"string\",\n      \"end_ts\": \"string\",\n      \"line_count_in\": 0,\n      \"token_count_in\": 0,\n      \"token_count_out\": 0,\n      \"compression_ratio\": 5637.2927994353895,\n      \"created_at\": {},\n      \"affected_services\": [\n        \"string\",\n        \"string\"\n      ],\n      \"root_cause_hypotheses\": [\n        {\n          \"key_0\": \"string\",\n          \"key_1\": 9992.246395813549,\n          \"key_2\": \"string\",\n          \"key_3\": true\n        },\n        {\n          \"key_0\": 3678.1742854054623,\n          \"key_1\": 4934.406355845144\n        }\n      ],\n      \"evidence_preview\": [\n        {\n          \"key_0\": 3655.8719151561736\n        },\n        {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9c4404e5-06c9-4076-8d69-fc4432422e02",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"q\": \"<string>\",\n  \"incident_id\": \"<string>\",\n  \"fingerprint\": \"<string>\",\n  \"family_id\": \"<string>\",\n  \"service\": \"<string>\",\n  \"source\": \"<string>\",\n  \"incident_type\": \"<string>\",\n  \"severity\": \"<string>\",\n  \"template_id\": \"<string>\",\n  \"role\": \"<string>\",\n  \"detected\": \"<boolean>\",\n  \"limit\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37730dc7-5702-4774-b8b6-842c28943f84",
+          "name": "Incident Memory Detail Endpoint",
+          "request": {
+            "name": "Incident Memory Detail Endpoint",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "incident-memory",
+                ":incident_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "incident_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "db5b79b9-d262-4980-8269-e34dbfb60711",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    ":incident_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "incident_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"incident\": {\n    \"incident_id\": \"string\",\n    \"fingerprint\": \"string\",\n    \"detected\": true,\n    \"request_id\": \"string\",\n    \"endpoint\": \"string\",\n    \"family_id\": \"string\",\n    \"type\": \"string\",\n    \"severity\": \"string\",\n    \"service\": \"string\",\n    \"source\": \"string\",\n    \"start_ts\": \"string\",\n    \"end_ts\": \"string\",\n    \"line_count_in\": 0,\n    \"token_count_in\": 0,\n    \"token_count_out\": 0,\n    \"compression_ratio\": 7540.443649398099,\n    \"created_at\": {},\n    \"affected_services\": [\n      \"string\",\n      \"string\"\n    ],\n    \"root_cause_hypotheses\": [\n      {\n        \"key_0\": 3391,\n        \"key_1\": false,\n        \"key_2\": \"string\"\n      },\n      {\n        \"key_0\": 181.5855559305468,\n        \"key_1\": \"string\"\n      }\n    ],\n    \"evidence_preview\": [\n      {\n        \"key_0\": 5232.303524823217,\n        \"key_1\": \"string\"\n      },\n      {\n        \"key_0\": \"string\",\n        \"key_1\": false,\n        \"key_2\": 5422,\n        \"key_3\": \"string\"\n      }\n    ]\n  },\n  \"capsule\": {\n    \"key_0\": 3788\n  },\n  \"compact_text\": \"string\",\n  \"summary\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cfe6218f-9bcb-4731-9efb-89d9e0fcd79c",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    ":incident_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "incident_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0d78969a-7df2-442b-bb15-0932289e0bd6",
+          "name": "Incident Memory Delete Endpoint",
+          "request": {
+            "name": "Incident Memory Delete Endpoint",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "incident-memory",
+                ":incident_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "incident_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "243b9371-d9f9-4f52-b48a-75694f640491",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    ":incident_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "incident_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": 918\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "851bf0b3-fa5f-47ae-95dc-3c61a66c6bee",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    ":incident_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "incident_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "230f210d-3853-4ae1-a99e-78cc846e88b1",
+          "name": "Incident Memory Raw Endpoint",
+          "request": {
+            "name": "Incident Memory Raw Endpoint",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "incident-memory",
+                ":incident_id",
+                "raw"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "incident_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d7d83147-7ac6-4daa-b00c-96c91ea74499",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    ":incident_id",
+                    "raw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "incident_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"incident_id\": \"string\",\n  \"available\": false,\n  \"lines\": [\n    \"string\",\n    \"string\"\n  ],\n  \"line_count\": 0,\n  \"truncated\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "102624cd-19b7-4af8-a457-72471b0f9ee4",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "incident-memory",
+                    ":incident_id",
+                    "raw"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "incident_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "899b0803-d9c9-4c7c-9bfd-96c57d29c169",
+    "name": "infra-logs templater Activate Incident Memory API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Token compression for log streams. POST raw logs, get back templates or capsules.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Incident Memory API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Incident Memory",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Incident Memory Search Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/incident-memory/search",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Incident Memory Search Endpoint"
+        },
+        {
+          "info": {
+            "name": "Incident Memory Detail Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/incident-memory/:incident_id",
+            "params": [
+              {
+                "name": "incident_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Incident Memory Detail Endpoint"
+        },
+        {
+          "info": {
+            "name": "Incident Memory Delete Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/v1/incident-memory/:incident_id",
+            "params": [
+              {
+                "name": "incident_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Incident Memory Delete Endpoint"
+        },
+        {
+          "info": {
+            "name": "Incident Memory Raw Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/incident-memory/:incident_id/raw",
+            "params": [
+              {
+                "name": "incident_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Incident Memory Raw Endpoint"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

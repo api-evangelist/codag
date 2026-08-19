@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Auth API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Google Login",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/google",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Exchange a Google authorization code for a session JWT + user/org info.\n\nSignup is open: any Google account can sign in. A first-time user with an\norg invite token joins that org; otherwise they land with no org and the\nconsole prompts them to create their first org via `POST /api/orgs/self-serve`."
+        },
+        {
+          "info": {
+            "name": "Get Me",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/auth/me"
+          },
+          "docs": "Get Me"
+        },
+        {
+          "info": {
+            "name": "Update Me",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/auth/me",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Me"
+        },
+        {
+          "info": {
+            "name": "Logout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/logout"
+          },
+          "docs": "Logout"
+        },
+        {
+          "info": {
+            "name": "Mint Console Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/console-session",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mint a short-lived browser bearer for direct /v1/* calls.\n\nAuthenticated by the user's session JWT. The returned token carries\n(user_id, org_id, aud=console-v1) and is valid for ~10 min. The browser\nholds it in memory and presents it on POST /v1/compact (and, for admins,\nthe deprecated /v1/capsule) direct to the API host (no Vercel proxy on the\ndata plane).\n\nBody must specify the target org. Prefer `org_id` (unambiguous);\n`org_slug` is accepted as a one-release deprecation path and is\nresolved a"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

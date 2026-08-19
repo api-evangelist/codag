@@ -1,0 +1,327 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Org API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Org",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Current Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org"
+          },
+          "docs": "Get Current Org"
+        },
+        {
+          "info": {
+            "name": "Update Current Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/org",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Current Org"
+        },
+        {
+          "info": {
+            "name": "List Current Org Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/keys"
+          },
+          "docs": "List Current Org Keys"
+        },
+        {
+          "info": {
+            "name": "Create Current Org Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/org/keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Current Org Key"
+        },
+        {
+          "info": {
+            "name": "Revoke Current Org Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/org/keys/:key_id",
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revoke Current Org Key"
+        },
+        {
+          "info": {
+            "name": "List Current Org Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/members"
+          },
+          "docs": "List Current Org Members"
+        },
+        {
+          "info": {
+            "name": "Remove Current Org Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/org/members/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove Current Org Member"
+        },
+        {
+          "info": {
+            "name": "List Current Org Invites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/invites"
+          },
+          "docs": "List Current Org Invites"
+        },
+        {
+          "info": {
+            "name": "Send Current Org Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/org/invites",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send Current Org Invite"
+        },
+        {
+          "info": {
+            "name": "Cancel Current Org Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/org/invites/:invite_id",
+            "params": [
+              {
+                "name": "invite_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel Current Org Invite"
+        },
+        {
+          "info": {
+            "name": "Get Current Org Usage Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/usage/summary",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Current Org Usage Summary"
+        },
+        {
+          "info": {
+            "name": "Get Current Org Usage Timeseries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/usage/timeseries",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Current Org Usage Timeseries"
+        },
+        {
+          "info": {
+            "name": "Get Current Org Usage By Dimension",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/usage/by-dimension",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dimension",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Current Org Usage By Dimension"
+        },
+        {
+          "info": {
+            "name": "Get Current Org Usage Patterns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/usage/patterns",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Current Org Usage Patterns"
+        },
+        {
+          "info": {
+            "name": "Get Current Org Incidents Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/incidents/summary",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Per-day incident counts for the console's Incidents rollup chart.\n\nReads incident_memory_runs directly (rides ix_incident_memory_runs_org_created).\nNo Pro gate: non-Pro orgs simply have no rows."
+        },
+        {
+          "info": {
+            "name": "Get Current Org Usage Efficiency",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/usage/efficiency",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Current Org Usage Efficiency"
+        },
+        {
+          "info": {
+            "name": "Get Current Org Usage New Patterns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/org/usage/new-patterns",
+            "params": [
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Current Org Usage New Patterns"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,172 @@
+{
+  "item": [
+    {
+      "id": "343ebd16-a212-44d2-a05f-769fdc5bc765",
+      "name": "Free",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dc73ed41-1c91-4c57-8ae0-4ea48c57e05d",
+          "name": "Free Compact Endpoint",
+          "request": {
+            "name": "Free Compact Endpoint",
+            "description": {
+              "content": "Anonymous free hosted compression backed by private codag-drain.\n\nThis endpoint intentionally avoids the request-scoped DB middleware path.\nIt validates/touches the anonymous token with one short checkout, performs\ndrain work without holding a connection, then records metadata/archive rows\nin a background task with a separate checkout.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "free",
+                "compact"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lines\": [\n    {\n      \"line_id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"level\": \"<string>\",\n      \"timestamp\": \"<string>\",\n      \"service\": \"<string>\"\n    },\n    {\n      \"line_id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"level\": \"<string>\",\n      \"timestamp\": \"<string>\",\n      \"service\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": 923\n  },\n  \"engine\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "68806230-ecf1-4ea1-9240-dfb2c7e86fb4",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "free",
+                    "compact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lines\": [\n    {\n      \"line_id\": 4699,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    },\n    {\n      \"line_id\": 8159,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  },\n  \"engine\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"text\": \"string\",\n  \"stats\": {\n    \"llm_calls\": 5740,\n    \"cache_hits\": 8523,\n    \"unmatched\": 3845,\n    \"elapsed_ms\": 3962,\n    \"incident_family_hits\": 0,\n    \"incident_induced_templates\": 0,\n    \"global_cache_hits\": 0,\n    \"global_shadow_hits\": 0,\n    \"global_shadow_agreements\": 0,\n    \"global_shadow_disagreements\": 0,\n    \"total_patterns\": 0,\n    \"candidate_patterns\": 0,\n    \"dropped_patterns\": 0,\n    \"cache_pattern_hits\": 0,\n    \"global_cache_pattern_hits\": 0\n  },\n  \"compact_engine\": \"string\",\n  \"compact_fallback\": \"string\",\n  \"compact_error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "235f56d6-4930-4a29-bb37-deadf48d2ca7",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "free",
+                    "compact"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lines\": [\n    {\n      \"line_id\": 4699,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    },\n    {\n      \"line_id\": 8159,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  },\n  \"engine\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "31107fb1-fae3-4509-b9a7-00ff4d9618d1",
+    "name": "infra-logs templater Activate Free API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Token compression for log streams. POST raw logs, get back templates or capsules.",
+      "type": "text/plain"
+    }
+  }
+}

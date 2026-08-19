@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Free API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Free",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Free Compact Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/free/compact",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Anonymous free hosted compression backed by private codag-drain.\n\nThis endpoint intentionally avoids the request-scoped DB middleware path.\nIt validates/touches the anonymous token with one short checkout, performs\ndrain work without holding a connection, then records metadata/archive rows\nin a background task with a separate checkout."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate billing API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "billing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Billing State",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/billing/state"
+          },
+          "docs": "Snapshot of plan + current-period usage for the dashboard."
+        },
+        {
+          "info": {
+            "name": "Create Checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/billing/checkout",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Checkout"
+        },
+        {
+          "info": {
+            "name": "Create Portal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/billing/portal"
+          },
+          "docs": "Create Portal"
+        },
+        {
+          "info": {
+            "name": "Stripe Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/billing/webhooks/stripe"
+          },
+          "docs": "Stripe Webhook"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

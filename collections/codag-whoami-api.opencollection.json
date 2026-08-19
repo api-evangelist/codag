@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Whoami API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Whoami",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Whoami Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/v1/whoami"
+          },
+          "docs": "Return the authenticated user and token-selected org, if any.\n\nSame JWT shape as /api/auth/me — accessible from the CLI via the\nBearer access_token issued by /oauth/token. Used both as `codag\nwhoami` and as the post-login validation step in `codag setup`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

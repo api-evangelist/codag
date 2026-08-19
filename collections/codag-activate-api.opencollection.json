@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Activate",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Preview Activation Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/activate/:code",
+            "params": [
+              {
+                "name": "code",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Public (unauthenticated) preview so the landing page can show what the\nlink grants *before* Google sign-in. Reveals kind, trial/opt-out length,\nvalidity, and the label (prospect-facing copy on the deal card) — never\nredemption internals. Rate-limited: this is a code-validity oracle. The\nslowapi decorator buckets per path (per guessed code), so unknown-code\nlookups additionally burn a cross-path per-IP budget."
+        },
+        {
+          "info": {
+            "name": "Redeem Activation Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/activate/:code/redeem",
+            "params": [
+              {
+                "name": "code",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Redeem an activation code: grant the caller's org a time-boxed inference\ntrial. Idempotent per (code, org) — re-clicking neither double-counts nor\nre-extends."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

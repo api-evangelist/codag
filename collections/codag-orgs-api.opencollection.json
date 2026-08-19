@@ -1,0 +1,353 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Orgs API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orgs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List My Orgs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs"
+          },
+          "docs": "List My Orgs"
+        },
+        {
+          "info": {
+            "name": "Create Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/orgs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an org. Global admin only.\n\nThe admin is added as `owner` so they can manage members/keys via the UI."
+        },
+        {
+          "info": {
+            "name": "Self Serve Create Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/orgs/self-serve",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create the caller's first org.\n\nWorkspace-domain signup (alice@acme.com) can call this with no body —\nwe title-case the domain label into a default name (\"Acme\") and slug.\n\nConsumer-domain signup (michael@gmail.com) must supply `{name, slug}`\nexplicitly; calling with no body returns `409 name_required` so the\nconsole can render its FirstOrgForm prompt instead of inflicting\n\"Gmail\" on the user.\n\nAllowed only when the caller has zero existing memberships; subsequent\norg creation goes through `POST"
+        },
+        {
+          "info": {
+            "name": "Get Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs/:slug",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Org"
+        },
+        {
+          "info": {
+            "name": "Update Org",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/orgs/:slug",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Org"
+        },
+        {
+          "info": {
+            "name": "List Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs/:slug/keys",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Keys"
+        },
+        {
+          "info": {
+            "name": "Create Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/orgs/:slug/keys",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Key"
+        },
+        {
+          "info": {
+            "name": "Revoke Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/orgs/:slug/keys/:key_id",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revoke Key"
+        },
+        {
+          "info": {
+            "name": "List Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs/:slug/members",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Members"
+        },
+        {
+          "info": {
+            "name": "Remove Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/orgs/:slug/members/:user_id",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove Member"
+        },
+        {
+          "info": {
+            "name": "List Invites",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs/:slug/invites",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List Invites"
+        },
+        {
+          "info": {
+            "name": "Send Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/orgs/:slug/invites",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send Invite"
+        },
+        {
+          "info": {
+            "name": "Cancel Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/orgs/:slug/invites/:invite_id",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "invite_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel Invite"
+        },
+        {
+          "info": {
+            "name": "Accept Invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/orgs/invites/:token/accept",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Accept Invite"
+        },
+        {
+          "info": {
+            "name": "Get Usage Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs/:slug/usage/summary",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Aggregate counters for the dashboard's headline KPI cards.\n\nLegacy slug route. Console uses `GET /api/org/usage/summary` now (id\nvia X-Codag-Org-Id header). Body identical via the shared helper."
+        },
+        {
+          "info": {
+            "name": "Get Usage Timeseries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs/:slug/usage/timeseries",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "period",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "bucket",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Bucketed series for the dashboard's bar chart. Legacy slug route."
+        },
+        {
+          "info": {
+            "name": "Get Org By Id Route",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/orgs/by-id/:org_id",
+            "params": [
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch an org by its base62 id.\n\nUsed by the console's switch-org route for global admins jumping to an\norg they aren't yet a member of. Membership is verified — for non-admin\ncallers a 403 falls out of `_require_org_access`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

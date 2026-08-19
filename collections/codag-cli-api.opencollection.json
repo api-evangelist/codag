@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Cli API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cli",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cli Confirm",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/cli/confirm",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Browser → server: 'I'm signed in, please link this user_code to me + org X'."
+        },
+        {
+          "info": {
+            "name": "Cli Deny",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/cli/deny",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Browser → server: 'user clicked Deny on the /cli-auth page'."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

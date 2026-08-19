@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Anonymous API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Anonymous",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Anonymous Token Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/anonymous/token"
+          },
+          "docs": "Mint a server-side anonymous token for free hosted compact calls."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Capsule API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Capsule",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Capsule Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/v1/capsule",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Capsule Endpoint"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

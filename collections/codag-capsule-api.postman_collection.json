@@ -1,0 +1,166 @@
+{
+  "item": [
+    {
+      "id": "1f8035b0-01be-4699-a2b7-0bfd9ab7cf8e",
+      "name": "Capsule",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e665a6b6-c457-4f5a-be0b-16809642c386",
+          "name": "Capsule Endpoint",
+          "request": {
+            "name": "Capsule Endpoint",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "capsule"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lines\": [\n    {\n      \"line_id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"level\": \"<string>\",\n      \"timestamp\": \"<string>\",\n      \"service\": \"<string>\"\n    },\n    {\n      \"line_id\": \"<integer>\",\n      \"message\": \"<string>\",\n      \"level\": \"<string>\",\n      \"timestamp\": \"<string>\",\n      \"service\": \"<string>\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": false\n  },\n  \"engine\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fd42a3c2-0ddd-4833-a3ab-ba1877849a93",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "capsule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lines\": [\n    {\n      \"line_id\": 6127,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    },\n    {\n      \"line_id\": 7598,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": 8335\n  },\n  \"engine\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"capsule\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  },\n  \"stats\": {\n    \"llm_calls\": 571,\n    \"cache_hits\": 9025,\n    \"unmatched\": 1555,\n    \"elapsed_ms\": 6751,\n    \"incident_family_hits\": 0,\n    \"incident_induced_templates\": 0,\n    \"global_cache_hits\": 0,\n    \"global_shadow_hits\": 0,\n    \"global_shadow_agreements\": 0,\n    \"global_shadow_disagreements\": 0,\n    \"total_patterns\": 0,\n    \"candidate_patterns\": 0,\n    \"dropped_patterns\": 0,\n    \"cache_pattern_hits\": 0,\n    \"global_cache_pattern_hits\": 0\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de7da0ce-971e-4209-957f-a95b339ad482",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "capsule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"lines\": [\n    {\n      \"line_id\": 6127,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    },\n    {\n      \"line_id\": 7598,\n      \"message\": \"string\",\n      \"level\": \"string\",\n      \"timestamp\": \"string\",\n      \"service\": \"string\"\n    }\n  ],\n  \"metadata\": {\n    \"key_0\": \"string\",\n    \"key_1\": 8335\n  },\n  \"engine\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fe5e0dbd-ea80-4855-8d47-dfaf5cc9ed84",
+    "name": "infra-logs templater Activate Capsule API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Token compression for log streams. POST raw logs, get back templates or capsules.",
+      "type": "text/plain"
+    }
+  }
+}

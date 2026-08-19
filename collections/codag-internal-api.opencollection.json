@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "infra-logs templater Activate Internal API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Internal",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Internal Notifications Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/internal/notifications/run",
+            "params": [
+              {
+                "name": "kind",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dry_run",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "org_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Secret-gated trigger for the email engine (spike alerts + weekly digest).\nWire a daily cron to POST here with `X-Cron-Secret`. `dry_run` defaults True\n(computes and returns what it *would* send, emails nobody)."
+        },
+        {
+          "info": {
+            "name": "Export Training Pairs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/internal/training-pairs/export",
+            "params": [
+              {
+                "name": "since_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Secret-gated JSONL export of the frontier distillation corpus\n(`frontier_training_pairs`). A scheduled job snapshots this to the\n`codag-training-data` Modal volume so the LoRA v4 corpus is not captive\nto the prod database. Cursor via `since_id`; rows are append-only."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
