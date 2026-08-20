@@ -82,6 +82,8 @@ apis:
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -92,6 +94,8 @@ apis:
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai
   tags:
+  - Billing
+  tags_raw:
   - billing
   properties:
   - type: OpenAPI
@@ -112,6 +116,8 @@ apis:
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai
   tags:
+  - CLI
+  tags_raw:
   - Cli
   properties:
   - type: OpenAPI
@@ -182,6 +188,8 @@ apis:
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai
   tags:
+  - Authentication
+  tags_raw:
   - Oauth
   properties:
   - type: OpenAPI
@@ -212,6 +220,8 @@ apis:
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai
   tags:
+  - Organization
+  tags_raw:
   - Orgs
   properties:
   - type: OpenAPI
