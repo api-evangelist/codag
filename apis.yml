@@ -128,7 +128,7 @@ apis:
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai
   tags:
-  - Cli
+  - CLI
   tags_raw:
   - Cli
   properties:
