@@ -194,18 +194,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/codag-internal-api-openapi.yml
-- aid: codag:codag-oauth-api
-  name: Codag Oauth API
-  description: The Oauth API from Codag — 2 operation(s) for oauth.
-  humanURL: https://codag.ai/docs
-  baseURL: https://api.codag.ai
-  tags:
-  - Authentication
-  tags_raw:
-  - Oauth
-  properties:
-  - type: OpenAPI
-    url: openapi/codag-oauth-api-openapi.yml
 - aid: codag:codag-onboard-api
   name: Codag Onboard API
   description: The Onboard API from Codag — 2 operation(s) for onboard.
@@ -258,6 +246,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/codag-whoami-api-openapi.yml
+- aid: codag:codag-oauth-api
+  name: Codag OAUTH API
+  description: The Oauth API from Codag — 2 operation(s) for oauth.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - Oauth
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-oauth-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
