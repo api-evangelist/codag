@@ -252,6 +252,8 @@ apis:
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai
   tags:
+  - Authentication
+  tags_raw:
   - Oauth
   properties:
   - type: OpenAPI
