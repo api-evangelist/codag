@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: infra-logs templater Activate Org API
+  title: infra-logs templater Org API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
   version: 0.1.0
 tags:
@@ -504,6 +504,15 @@ paths:
       - Org
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     UpdateOrgRequest:
       properties:
         slug:
@@ -528,6 +537,21 @@ components:
           title: Alerts Enabled
       type: object
       title: UpdateOrgRequest
+    CreateInviteRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        role:
+          type: string
+          pattern: ^(admin|member)$
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CreateInviteRequest
     ValidationError:
       properties:
         loc:
@@ -565,27 +589,3 @@ components:
       required:
       - name
       title: CreateKeyRequest
-    CreateInviteRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-        role:
-          type: string
-          pattern: ^(admin|member)$
-          title: Role
-          default: member
-      type: object
-      required:
-      - email
-      title: CreateInviteRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

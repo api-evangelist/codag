@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: infra-logs templater Activate Incident Memory API
+  title: infra-logs templater Incident Memory API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
   version: 0.1.0
 tags:
@@ -112,6 +112,139 @@ paths:
       - Incident Memory
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    IncidentMemoryGraphResponse:
+      properties:
+        incident:
+          $ref: '#/components/schemas/IncidentMemorySummary'
+        capsule:
+          additionalProperties: true
+          type: object
+          title: Capsule
+        compact_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Text
+        summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Summary
+      type: object
+      required:
+      - incident
+      - capsule
+      title: IncidentMemoryGraphResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    IncidentMemorySearchRequest:
+      properties:
+        q:
+          anyOf:
+          - type: string
+            maxLength: 512
+          - type: 'null'
+          title: Q
+        incident_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Incident Id
+        fingerprint:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Fingerprint
+        family_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Family Id
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+        source:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Source
+        incident_type:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Incident Type
+        severity:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Severity
+        template_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Template Id
+        role:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Role
+        detected:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Detected
+        limit:
+          type: integer
+          maximum: 100.0
+          minimum: 1.0
+          title: Limit
+          default: 20
+      type: object
+      title: IncidentMemorySearchRequest
     IncidentMemorySummary:
       properties:
         incident_id:
@@ -210,150 +343,6 @@ components:
       - fingerprint
       - detected
       title: IncidentMemorySummary
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    IncidentMemorySearchResponse:
-      properties:
-        incidents:
-          items:
-            $ref: '#/components/schemas/IncidentMemorySummary'
-          type: array
-          title: Incidents
-      type: object
-      required:
-      - incidents
-      title: IncidentMemorySearchResponse
-    IncidentMemoryGraphResponse:
-      properties:
-        incident:
-          $ref: '#/components/schemas/IncidentMemorySummary'
-        capsule:
-          additionalProperties: true
-          type: object
-          title: Capsule
-        compact_text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Text
-        summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Summary
-      type: object
-      required:
-      - incident
-      - capsule
-      title: IncidentMemoryGraphResponse
-    IncidentMemorySearchRequest:
-      properties:
-        q:
-          anyOf:
-          - type: string
-            maxLength: 512
-          - type: 'null'
-          title: Q
-        incident_id:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Incident Id
-        fingerprint:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Fingerprint
-        family_id:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Family Id
-        service:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Service
-        source:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Source
-        incident_type:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Incident Type
-        severity:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Severity
-        template_id:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Template Id
-        role:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Role
-        detected:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Detected
-        limit:
-          type: integer
-          maximum: 100.0
-          minimum: 1.0
-          title: Limit
-          default: 20
-      type: object
-      title: IncidentMemorySearchRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     IncidentRawLogsResponse:
       properties:
         incident_id:
@@ -381,3 +370,14 @@ components:
       - incident_id
       title: IncidentRawLogsResponse
       description: Exact original input lines for an incident (admin on-demand viewer).
+    IncidentMemorySearchResponse:
+      properties:
+        incidents:
+          items:
+            $ref: '#/components/schemas/IncidentMemorySummary'
+          type: array
+          title: Incidents
+      type: object
+      required:
+      - incidents
+      title: IncidentMemorySearchResponse

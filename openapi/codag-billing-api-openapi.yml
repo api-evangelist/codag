@@ -1,15 +1,15 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: infra-logs templater Activate billing API
+  title: infra-logs templater Billing API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
   version: 0.1.0
 tags:
-- name: billing
+- name: Billing
 paths:
   /api/billing/state:
     get:
       tags:
-      - billing
+      - Billing
       summary: Get Billing State
       description: Snapshot of plan + current-period usage for the dashboard.
       operationId: get_billing_state_api_billing_state_get
@@ -23,7 +23,7 @@ paths:
   /api/billing/checkout:
     post:
       tags:
-      - billing
+      - Billing
       summary: Create Checkout
       operationId: create_checkout_api_billing_checkout_post
       requestBody:
@@ -48,7 +48,7 @@ paths:
   /api/billing/portal:
     post:
       tags:
-      - billing
+      - Billing
       summary: Create Portal
       operationId: create_portal_api_billing_portal_post
       responses:
@@ -61,7 +61,7 @@ paths:
   /api/billing/webhooks/stripe:
     post:
       tags:
-      - billing
+      - Billing
       summary: Stripe Webhook
       operationId: stripe_webhook_api_billing_webhooks_stripe_post
       responses:
@@ -75,22 +75,15 @@ paths:
                 title: Response Stripe Webhook Api Billing Webhooks Stripe Post
 components:
   schemas:
-    CheckoutRequest:
+    HTTPValidationError:
       properties:
-        plan:
-          type: string
-          pattern: ^(hobby|team|team_annual)$
-          title: Plan
-        deal_code:
-          anyOf:
-          - type: string
-            maxLength: 64
-          - type: 'null'
-          title: Deal Code
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - plan
-      title: CheckoutRequest
+      title: HTTPValidationError
     CheckoutResponse:
       properties:
         checkout_url:
@@ -100,6 +93,15 @@ components:
       required:
       - checkout_url
       title: CheckoutResponse
+    PortalResponse:
+      properties:
+        portal_url:
+          type: string
+          title: Portal Url
+      type: object
+      required:
+      - portal_url
+      title: PortalResponse
     ValidationError:
       properties:
         loc:
@@ -126,24 +128,22 @@ components:
       - msg
       - type
       title: ValidationError
-    PortalResponse:
+    CheckoutRequest:
       properties:
-        portal_url:
+        plan:
           type: string
-          title: Portal Url
+          pattern: ^(hobby|team|team_annual)$
+          title: Plan
+        deal_code:
+          anyOf:
+          - type: string
+            maxLength: 64
+          - type: 'null'
+          title: Deal Code
       type: object
       required:
-      - portal_url
-      title: PortalResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - plan
+      title: CheckoutRequest
     BillingStateResponse:
       properties:
         plan_tier:

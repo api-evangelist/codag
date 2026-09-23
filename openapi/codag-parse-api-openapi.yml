@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: infra-logs templater Activate Parse API
+  title: infra-logs templater Parse API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
   version: 0.1.0
 tags:
@@ -34,6 +34,28 @@ paths:
       - Parse
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    TemplateOut:
+      properties:
+        template_id:
+          type: string
+          title: Template Id
+        raw_template:
+          type: string
+          title: Raw Template
+      type: object
+      required:
+      - template_id
+      - raw_template
+      title: TemplateOut
     ParseResponse:
       properties:
         templates:
@@ -54,42 +76,6 @@ components:
       - parsed
       - stats
       title: ParseResponse
-    ParsedLineOut:
-      properties:
-        line:
-          type: string
-          title: Line
-        template_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Template Id
-        raw_template:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Raw Template
-        cache_hit:
-          type: boolean
-          title: Cache Hit
-          default: false
-      type: object
-      required:
-      - line
-      title: ParsedLineOut
-    TemplateOut:
-      properties:
-        template_id:
-          type: string
-          title: Template Id
-        raw_template:
-          type: string
-          title: Raw Template
-      type: object
-      required:
-      - template_id
-      - raw_template
-      title: TemplateOut
     ValidationError:
       properties:
         loc:
@@ -116,6 +102,57 @@ components:
       - msg
       - type
       title: ValidationError
+    ParseRequest:
+      properties:
+        lines:
+          items:
+            type: string
+            maxLength: 262144
+          type: array
+          maxItems: 1000000
+          title: Lines
+          description: Raw log lines to template.
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+          description: Service name the lines come from (e.g. 'payments-api'). Used for per-service breakdowns.
+        source:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Source
+          description: Origin tag for the batch (e.g. 'vercel', 'datadog'). Free-form.
+      type: object
+      required:
+      - lines
+      title: ParseRequest
+    ParsedLineOut:
+      properties:
+        line:
+          type: string
+          title: Line
+        template_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Template Id
+        raw_template:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Raw Template
+        cache_hit:
+          type: boolean
+          title: Cache Hit
+          default: false
+      type: object
+      required:
+      - line
+      title: ParsedLineOut
     ParseStats:
       properties:
         llm_calls:
@@ -181,40 +218,3 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ParseRequest:
-      properties:
-        lines:
-          items:
-            type: string
-            maxLength: 262144
-          type: array
-          maxItems: 1000000
-          title: Lines
-          description: Raw log lines to template.
-        service:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Service
-          description: Service name the lines come from (e.g. 'payments-api'). Used for per-service breakdowns.
-        source:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Source
-          description: Origin tag for the batch (e.g. 'vercel', 'datadog'). Free-form.
-      type: object
-      required:
-      - lines
-      title: ParseRequest

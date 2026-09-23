@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: infra-logs templater Activate API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
@@ -88,6 +88,24 @@ paths:
       - Activate
 components:
   schemas:
+    RedeemActivationRequest:
+      properties:
+        org_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Id
+      type: object
+      title: RedeemActivationRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -114,21 +132,3 @@ components:
       - msg
       - type
       title: ValidationError
-    RedeemActivationRequest:
-      properties:
-        org_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Org Id
-      type: object
-      title: RedeemActivationRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: infra-logs templater Activate Onboard API
+  title: infra-logs templater Onboard API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
   version: 0.1.0
 tags:
@@ -17,7 +17,7 @@ paths:
         ''Last warmed: 2h ago, +127 templates'' next to each integration tile.
 
 
-        Prefer `?org_id=<numeric>`. `?slug=<org-slug>` is accepted as a
+        Prefer `?org_id=`. `?slug=` is accepted as a
 
         one-release deprecation path (resolved against the caller''s
 
@@ -98,6 +98,32 @@ paths:
       - Onboard
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     WarmResponse:
       properties:
         source:
@@ -135,32 +161,15 @@ components:
       - elapsed_ms
       - quota_remaining
       title: WarmResponse
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      title: HTTPValidationError
     WarmRequest:
       properties:
         lines:
@@ -193,12 +202,3 @@ components:
         the response and used in server logs for attribution. No semantic
 
         behavior is keyed off it.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

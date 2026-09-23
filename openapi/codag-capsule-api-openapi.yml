@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: infra-logs templater Activate Capsule API
+  title: infra-logs templater Capsule API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
   version: 0.1.0
 tags:
@@ -34,6 +34,15 @@ paths:
       - Capsule
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -60,6 +69,52 @@ components:
       - msg
       - type
       title: ValidationError
+    LineRecord:
+      properties:
+        line_id:
+          type: integer
+          title: Line Id
+        message:
+          type: string
+          maxLength: 262144
+          title: Message
+        level:
+          anyOf:
+          - type: string
+            maxLength: 32
+          - type: 'null'
+          title: Level
+        timestamp:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Timestamp
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+      type: object
+      required:
+      - line_id
+      - message
+      title: LineRecord
+      description: One log record with metadata for capsule construction.
+    CapsuleResponse:
+      properties:
+        capsule:
+          additionalProperties: true
+          type: object
+          title: Capsule
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+      type: object
+      required:
+      - capsule
+      - stats
+      title: CapsuleResponse
     ParseStats:
       properties:
         llm_calls:
@@ -125,61 +180,6 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    LineRecord:
-      properties:
-        line_id:
-          type: integer
-          title: Line Id
-        message:
-          type: string
-          maxLength: 262144
-          title: Message
-        level:
-          anyOf:
-          - type: string
-            maxLength: 32
-          - type: 'null'
-          title: Level
-        timestamp:
-          anyOf:
-          - type: string
-            maxLength: 128
-          - type: 'null'
-          title: Timestamp
-        service:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Service
-      type: object
-      required:
-      - line_id
-      - message
-      title: LineRecord
-      description: One log record with metadata for capsule construction.
-    CapsuleResponse:
-      properties:
-        capsule:
-          additionalProperties: true
-          type: object
-          title: Capsule
-        stats:
-          $ref: '#/components/schemas/ParseStats'
-      type: object
-      required:
-      - capsule
-      - stats
-      title: CapsuleResponse
     CapsuleRequest:
       properties:
         lines:

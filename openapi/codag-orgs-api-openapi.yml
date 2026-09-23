@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: infra-logs templater Activate Orgs API
+  title: infra-logs templater Orgs API
   description: Token compression for log streams. POST raw logs, get back templates or capsules.
   version: 0.1.0
 tags:
@@ -583,6 +583,15 @@ paths:
       - Orgs
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     UpdateOrgRequest:
       properties:
         slug:
@@ -607,50 +616,21 @@ components:
           title: Alerts Enabled
       type: object
       title: UpdateOrgRequest
-    CreateOrgRequest:
+    CreateInviteRequest:
       properties:
-        slug:
+        email:
           type: string
-          maxLength: 64
-          minLength: 2
-          pattern: ^[a-z0-9][a-z0-9-]*$
-          title: Slug
-        name:
+          format: email
+          title: Email
+        role:
           type: string
-          maxLength: 128
-          minLength: 1
-          title: Name
+          pattern: ^(admin|member)$
+          title: Role
+          default: member
       type: object
       required:
-      - slug
-      - name
-      title: CreateOrgRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - email
+      title: CreateInviteRequest
     SelfServeCreateRequest:
       properties:
         name:
@@ -682,6 +662,32 @@ components:
         forced to pick a real name + slug instead of getting "Gmail" inflicted
 
         on them. `name` and `slug` must be provided together when given.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     CreateKeyRequest:
       properties:
         name:
@@ -693,27 +699,21 @@ components:
       required:
       - name
       title: CreateKeyRequest
-    CreateInviteRequest:
+    CreateOrgRequest:
       properties:
-        email:
+        slug:
           type: string
-          format: email
-          title: Email
-        role:
+          maxLength: 64
+          minLength: 2
+          pattern: ^[a-z0-9][a-z0-9-]*$
+          title: Slug
+        name:
           type: string
-          pattern: ^(admin|member)$
-          title: Role
-          default: member
+          maxLength: 128
+          minLength: 1
+          title: Name
       type: object
       required:
-      - email
-      title: CreateInviteRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      - slug
+      - name
+      title: CreateOrgRequest
