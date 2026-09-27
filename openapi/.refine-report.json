@@ -24,9 +24,7 @@
     "codag-whoami-api-openapi.yml",
     "codag-billing-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -117,8 +115,7 @@
     "codag-openapi-original.json: declared missing tag: Parse",
     "codag-openapi-original.json: declared missing tag: Whoami",
     "codag-openapi-original.json: declared missing tag: billing",
-    "superseded outputs removed: codag-o-auth-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 19 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "codag-activate-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -134,7 +131,7 @@
     "codag-incident-memory-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "codag-install-sh-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "codag-internal-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "codag-o-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "codag-oauth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "codag-onboard-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "codag-org-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "codag-orgs-api-openapi.yml: previously refined output, superseded by openapi/_original/",

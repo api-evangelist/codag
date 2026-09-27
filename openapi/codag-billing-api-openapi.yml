@@ -84,24 +84,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    CheckoutResponse:
-      properties:
-        checkout_url:
-          type: string
-          title: Checkout Url
-      type: object
-      required:
-      - checkout_url
-      title: CheckoutResponse
-    PortalResponse:
-      properties:
-        portal_url:
-          type: string
-          title: Portal Url
-      type: object
-      required:
-      - portal_url
-      title: PortalResponse
     ValidationError:
       properties:
         loc:
@@ -128,6 +110,15 @@ components:
       - msg
       - type
       title: ValidationError
+    PortalResponse:
+      properties:
+        portal_url:
+          type: string
+          title: Portal Url
+      type: object
+      required:
+      - portal_url
+      title: PortalResponse
     CheckoutRequest:
       properties:
         plan:
@@ -144,6 +135,15 @@ components:
       required:
       - plan
       title: CheckoutRequest
+    CheckoutResponse:
+      properties:
+        checkout_url:
+          type: string
+          title: Checkout Url
+      type: object
+      required:
+      - checkout_url
+      title: CheckoutResponse
     BillingStateResponse:
       properties:
         plan_tier:

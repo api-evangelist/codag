@@ -101,7 +101,7 @@ apis:
   - type: OpenAPI
     url: openapi/codag-auth-api-openapi.yml
 - aid: codag:codag-billing-api
-  name: Codag billing API
+  name: Codag Billing API
   description: The billing API from Codag — 4 operation(s) for billing.
   humanURL: https://codag.ai/docs
   baseURL: https://api.codag.ai

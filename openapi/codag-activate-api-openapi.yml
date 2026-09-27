@@ -88,15 +88,6 @@ paths:
       - Activate
 components:
   schemas:
-    RedeemActivationRequest:
-      properties:
-        org_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Org Id
-      type: object
-      title: RedeemActivationRequest
     HTTPValidationError:
       properties:
         detail:
@@ -106,6 +97,15 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    RedeemActivationRequest:
+      properties:
+        org_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Id
+      type: object
+      title: RedeemActivationRequest
     ValidationError:
       properties:
         loc:

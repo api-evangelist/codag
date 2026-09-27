@@ -140,42 +140,16 @@ paths:
       - Auth
 components:
   schemas:
-    GoogleAuthRequest:
+    UpdateProfileRequest:
       properties:
-        code:
-          type: string
-          title: Code
-        redirect_uri:
-          type: string
-          title: Redirect Uri
-        org_invite_token:
+        name:
           anyOf:
           - type: string
+            maxLength: 128
           - type: 'null'
-          title: Org Invite Token
+          title: Name
       type: object
-      required:
-      - code
-      - redirect_uri
-      title: GoogleAuthRequest
-    MeResponse:
-      properties:
-        user:
-          $ref: '#/components/schemas/UserOut'
-        orgs:
-          items:
-            $ref: '#/components/schemas/OrgOut'
-          type: array
-          title: Orgs
-        is_global_admin:
-          type: boolean
-          title: Is Global Admin
-      type: object
-      required:
-      - user
-      - orgs
-      - is_global_admin
-      title: MeResponse
+      title: UpdateProfileRequest
     HTTPValidationError:
       properties:
         detail:
@@ -211,91 +185,6 @@ components:
       - orgs
       - is_global_admin
       title: GoogleAuthResponse
-    ConsoleSessionRequest:
-      properties:
-        org_id:
-          anyOf:
-          - type: string
-            maxLength: 64
-            minLength: 1
-          - type: 'null'
-          title: Org Id
-        org_slug:
-          anyOf:
-          - type: string
-            maxLength: 64
-            minLength: 2
-            pattern: ^[a-z0-9][a-z0-9-]*$
-          - type: 'null'
-          title: Org Slug
-      type: object
-      title: ConsoleSessionRequest
-    OrgOut:
-      properties:
-        id:
-          type: string
-          title: Id
-        slug:
-          type: string
-          title: Slug
-        name:
-          type: string
-          title: Name
-        role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Role
-      type: object
-      required:
-      - id
-      - slug
-      - name
-      title: OrgOut
-    ConsoleSessionResponse:
-      properties:
-        token:
-          type: string
-          title: Token
-        org_id:
-          type: string
-          title: Org Id
-        org_slug:
-          type: string
-          title: Org Slug
-        expires_at:
-          type: integer
-          title: Expires At
-      type: object
-      required:
-      - token
-      - org_id
-      - org_slug
-      - expires_at
-      title: ConsoleSessionResponse
-    UserOut:
-      properties:
-        id:
-          type: integer
-          title: Id
-        email:
-          type: string
-          title: Email
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        avatar_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Avatar Url
-      type: object
-      required:
-      - id
-      - email
-      title: UserOut
     ValidationError:
       properties:
         loc:
@@ -322,13 +211,124 @@ components:
       - msg
       - type
       title: ValidationError
-    UpdateProfileRequest:
+    ConsoleSessionRequest:
       properties:
+        org_id:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 1
+          - type: 'null'
+          title: Org Id
+        org_slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 2
+            pattern: ^[a-z0-9][a-z0-9-]*$
+          - type: 'null'
+          title: Org Slug
+      type: object
+      title: ConsoleSessionRequest
+    MeResponse:
+      properties:
+        user:
+          $ref: '#/components/schemas/UserOut'
+        orgs:
+          items:
+            $ref: '#/components/schemas/OrgOut'
+          type: array
+          title: Orgs
+        is_global_admin:
+          type: boolean
+          title: Is Global Admin
+      type: object
+      required:
+      - user
+      - orgs
+      - is_global_admin
+      title: MeResponse
+    GoogleAuthRequest:
+      properties:
+        code:
+          type: string
+          title: Code
+        redirect_uri:
+          type: string
+          title: Redirect Uri
+        org_invite_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Org Invite Token
+      type: object
+      required:
+      - code
+      - redirect_uri
+      title: GoogleAuthRequest
+    UserOut:
+      properties:
+        id:
+          type: integer
+          title: Id
+        email:
+          type: string
+          title: Email
         name:
           anyOf:
           - type: string
-            maxLength: 128
           - type: 'null'
           title: Name
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
       type: object
-      title: UpdateProfileRequest
+      required:
+      - id
+      - email
+      title: UserOut
+    ConsoleSessionResponse:
+      properties:
+        token:
+          type: string
+          title: Token
+        org_id:
+          type: string
+          title: Org Id
+        org_slug:
+          type: string
+          title: Org Slug
+        expires_at:
+          type: integer
+          title: Expires At
+      type: object
+      required:
+      - token
+      - org_id
+      - org_slug
+      - expires_at
+      title: ConsoleSessionResponse
+    OrgOut:
+      properties:
+        id:
+          type: string
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        name:
+          type: string
+          title: Name
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      title: OrgOut
