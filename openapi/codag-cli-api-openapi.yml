@@ -69,6 +69,23 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    CLIConfirmResponse:
+      properties:
+        ok:
+          type: boolean
+          title: Ok
+        user_code:
+          type: string
+          title: User Code
+        org:
+          type: string
+          title: Org
+      type: object
+      required:
+      - ok
+      - user_code
+      - org
+      title: CLIConfirmResponse
     CLIConfirmRequest:
       properties:
         user_code:
@@ -94,23 +111,6 @@ components:
       required:
       - user_code
       title: CLIConfirmRequest
-    CLIConfirmResponse:
-      properties:
-        ok:
-          type: boolean
-          title: Ok
-        user_code:
-          type: string
-          title: User Code
-        org:
-          type: string
-          title: Org
-      type: object
-      required:
-      - ok
-      - user_code
-      - org
-      title: CLIConfirmResponse
     ValidationError:
       properties:
         loc:

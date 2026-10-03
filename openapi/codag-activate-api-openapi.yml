@@ -88,15 +88,6 @@ paths:
       - Activate
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     RedeemActivationRequest:
       properties:
         org_id:
@@ -106,6 +97,15 @@ components:
           title: Org Id
       type: object
       title: RedeemActivationRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:

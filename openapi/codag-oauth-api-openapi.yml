@@ -57,6 +57,29 @@ paths:
       - OAuth
 components:
   schemas:
+    Body_token_endpoint_oauth_token_post:
+      properties:
+        grant_type:
+          type: string
+          title: Grant Type
+        device_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Code
+        refresh_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refresh Token
+        client_id:
+          type: string
+          title: Client Id
+          default: codag-cli
+      type: object
+      required:
+      - grant_type
+      title: Body_token_endpoint_oauth_token_post
     HTTPValidationError:
       properties:
         detail:
@@ -66,6 +89,23 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    Body_device_code_endpoint_oauth_device_code_post:
+      properties:
+        client_id:
+          type: string
+          title: Client Id
+          default: codag-cli
+        scope:
+          type: string
+          title: Scope
+          default: ''
+        anonymous_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Anonymous Token
+      type: object
+      title: Body_device_code_endpoint_oauth_device_code_post
     ValidationError:
       properties:
         loc:
@@ -92,43 +132,3 @@ components:
       - msg
       - type
       title: ValidationError
-    Body_device_code_endpoint_oauth_device_code_post:
-      properties:
-        client_id:
-          type: string
-          title: Client Id
-          default: codag-cli
-        scope:
-          type: string
-          title: Scope
-          default: ''
-        anonymous_token:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Anonymous Token
-      type: object
-      title: Body_device_code_endpoint_oauth_device_code_post
-    Body_token_endpoint_oauth_token_post:
-      properties:
-        grant_type:
-          type: string
-          title: Grant Type
-        device_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Device Code
-        refresh_token:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Refresh Token
-        client_id:
-          type: string
-          title: Client Id
-          default: codag-cli
-      type: object
-      required:
-      - grant_type
-      title: Body_token_endpoint_oauth_token_post

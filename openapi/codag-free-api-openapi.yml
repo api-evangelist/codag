@@ -108,6 +108,33 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
+    CompactResponse:
+      properties:
+        text:
+          type: string
+          title: Text
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+        compact_engine:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Engine
+        compact_fallback:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Fallback
+        compact_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Error
+      type: object
+      required:
+      - text
+      - stats
+      title: CompactResponse
     LineRecord:
       properties:
         line_id:
@@ -150,33 +177,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    CompactResponse:
-      properties:
-        text:
-          type: string
-          title: Text
-        stats:
-          $ref: '#/components/schemas/ParseStats'
-        compact_engine:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Engine
-        compact_fallback:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Fallback
-        compact_error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Error
-      type: object
-      required:
-      - text
-      - stats
-      title: CompactResponse
     ValidationError:
       properties:
         loc:

@@ -149,6 +149,33 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
+    CompactJobResponse:
+      properties:
+        job_id:
+          type: string
+          title: Job Id
+        status:
+          type: string
+          title: Status
+        text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Text
+        stats:
+          anyOf:
+          - $ref: '#/components/schemas/ParseStats'
+          - type: 'null'
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - job_id
+      - status
+      title: CompactJobResponse
     LineRecord:
       properties:
         line_id:
@@ -182,15 +209,6 @@ components:
       - message
       title: LineRecord
       description: One log record with metadata for capsule construction.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     CompactResponse:
       properties:
         text:
@@ -218,6 +236,15 @@ components:
       - text
       - stats
       title: CompactResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -244,33 +271,6 @@ components:
       - msg
       - type
       title: ValidationError
-    CompactJobResponse:
-      properties:
-        job_id:
-          type: string
-          title: Job Id
-        status:
-          type: string
-          title: Status
-        text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Text
-        stats:
-          anyOf:
-          - $ref: '#/components/schemas/ParseStats'
-          - type: 'null'
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-      type: object
-      required:
-      - job_id
-      - status
-      title: CompactJobResponse
     CompactJobCreateResponse:
       properties:
         job_id:

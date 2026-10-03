@@ -34,6 +34,26 @@ paths:
       - Parse
 components:
   schemas:
+    ParseResponse:
+      properties:
+        templates:
+          items:
+            $ref: '#/components/schemas/TemplateOut'
+          type: array
+          title: Templates
+        parsed:
+          items:
+            $ref: '#/components/schemas/ParsedLineOut'
+          type: array
+          title: Parsed
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+      type: object
+      required:
+      - templates
+      - parsed
+      - stats
+      title: ParseResponse
     ParseStats:
       properties:
         llm_calls:
@@ -99,6 +119,57 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
+    ParsedLineOut:
+      properties:
+        line:
+          type: string
+          title: Line
+        template_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Template Id
+        raw_template:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Raw Template
+        cache_hit:
+          type: boolean
+          title: Cache Hit
+          default: false
+      type: object
+      required:
+      - line
+      title: ParsedLineOut
+    ParseRequest:
+      properties:
+        lines:
+          items:
+            type: string
+            maxLength: 262144
+          type: array
+          maxItems: 1000000
+          title: Lines
+          description: Raw log lines to template.
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+          description: Service name the lines come from (e.g. 'payments-api'). Used for per-service breakdowns.
+        source:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Source
+          description: Origin tag for the batch (e.g. 'vercel', 'datadog'). Free-form.
+      type: object
+      required:
+      - lines
+      title: ParseRequest
     HTTPValidationError:
       properties:
         detail:
@@ -147,74 +218,3 @@ components:
       - template_id
       - raw_template
       title: TemplateOut
-    ParseRequest:
-      properties:
-        lines:
-          items:
-            type: string
-            maxLength: 262144
-          type: array
-          maxItems: 1000000
-          title: Lines
-          description: Raw log lines to template.
-        service:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Service
-          description: Service name the lines come from (e.g. 'payments-api'). Used for per-service breakdowns.
-        source:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Source
-          description: Origin tag for the batch (e.g. 'vercel', 'datadog'). Free-form.
-      type: object
-      required:
-      - lines
-      title: ParseRequest
-    ParsedLineOut:
-      properties:
-        line:
-          type: string
-          title: Line
-        template_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Template Id
-        raw_template:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Raw Template
-        cache_hit:
-          type: boolean
-          title: Cache Hit
-          default: false
-      type: object
-      required:
-      - line
-      title: ParsedLineOut
-    ParseResponse:
-      properties:
-        templates:
-          items:
-            $ref: '#/components/schemas/TemplateOut'
-          type: array
-          title: Templates
-        parsed:
-          items:
-            $ref: '#/components/schemas/ParsedLineOut'
-          type: array
-          title: Parsed
-        stats:
-          $ref: '#/components/schemas/ParseStats'
-      type: object
-      required:
-      - templates
-      - parsed
-      - stats
-      title: ParseResponse

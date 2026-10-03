@@ -98,47 +98,6 @@ paths:
       - Onboard
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    WarmRequest:
-      properties:
-        lines:
-          items:
-            type: string
-            maxLength: 262144
-          type: array
-          maxItems: 1000000
-          title: Lines
-          description: Raw log lines to template + persist.
-        source:
-          type: string
-          maxLength: 256
-          title: Source
-          description: Origin tag (vercel, datadog, etc.)
-          default: unknown
-      type: object
-      required:
-      - lines
-      title: WarmRequest
-      description: 'Bulk pre-warm request: ingest historical log lines and persist their
-
-        templates to the org''s `template_cache` so subsequent /v1/compact calls
-
-        hit the regex cache instead of cold-starting the LLM templater.
-
-
-        `source` is a free-form tag (e.g. "vercel", "datadog") echoed back in
-
-        the response and used in server logs for attribution. No semantic
-
-        behavior is keyed off it.'
     WarmResponse:
       properties:
         source:
@@ -176,6 +135,47 @@ components:
       - elapsed_ms
       - quota_remaining
       title: WarmResponse
+    WarmRequest:
+      properties:
+        lines:
+          items:
+            type: string
+            maxLength: 262144
+          type: array
+          maxItems: 1000000
+          title: Lines
+          description: Raw log lines to template + persist.
+        source:
+          type: string
+          maxLength: 256
+          title: Source
+          description: Origin tag (vercel, datadog, etc.)
+          default: unknown
+      type: object
+      required:
+      - lines
+      title: WarmRequest
+      description: 'Bulk pre-warm request: ingest historical log lines and persist their
+
+        templates to the org''s `template_cache` so subsequent /v1/compact calls
+
+        hit the regex cache instead of cold-starting the LLM templater.
+
+
+        `source` is a free-form tag (e.g. "vercel", "datadog") echoed back in
+
+        the response and used in server logs for attribution. No semantic
+
+        behavior is keyed off it.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
