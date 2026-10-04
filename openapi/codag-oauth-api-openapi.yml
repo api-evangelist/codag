@@ -57,38 +57,6 @@ paths:
       - OAuth
 components:
   schemas:
-    Body_token_endpoint_oauth_token_post:
-      properties:
-        grant_type:
-          type: string
-          title: Grant Type
-        device_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Device Code
-        refresh_token:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Refresh Token
-        client_id:
-          type: string
-          title: Client Id
-          default: codag-cli
-      type: object
-      required:
-      - grant_type
-      title: Body_token_endpoint_oauth_token_post
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     Body_device_code_endpoint_oauth_device_code_post:
       properties:
         client_id:
@@ -132,3 +100,35 @@ components:
       - msg
       - type
       title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Body_token_endpoint_oauth_token_post:
+      properties:
+        grant_type:
+          type: string
+          title: Grant Type
+        device_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Device Code
+        refresh_token:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refresh Token
+        client_id:
+          type: string
+          title: Client Id
+          default: codag-cli
+      type: object
+      required:
+      - grant_type
+      title: Body_token_endpoint_oauth_token_post

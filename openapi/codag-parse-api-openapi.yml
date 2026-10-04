@@ -34,26 +34,19 @@ paths:
       - Parse
 components:
   schemas:
-    ParseResponse:
+    TemplateOut:
       properties:
-        templates:
-          items:
-            $ref: '#/components/schemas/TemplateOut'
-          type: array
-          title: Templates
-        parsed:
-          items:
-            $ref: '#/components/schemas/ParsedLineOut'
-          type: array
-          title: Parsed
-        stats:
-          $ref: '#/components/schemas/ParseStats'
+        template_id:
+          type: string
+          title: Template Id
+        raw_template:
+          type: string
+          title: Raw Template
       type: object
       required:
-      - templates
-      - parsed
-      - stats
-      title: ParseResponse
+      - template_id
+      - raw_template
+      title: TemplateOut
     ParseStats:
       properties:
         llm_calls:
@@ -119,29 +112,6 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
-    ParsedLineOut:
-      properties:
-        line:
-          type: string
-          title: Line
-        template_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Template Id
-        raw_template:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Raw Template
-        cache_hit:
-          type: boolean
-          title: Cache Hit
-          default: false
-      type: object
-      required:
-      - line
-      title: ParsedLineOut
     ParseRequest:
       properties:
         lines:
@@ -170,6 +140,26 @@ components:
       required:
       - lines
       title: ParseRequest
+    ParseResponse:
+      properties:
+        templates:
+          items:
+            $ref: '#/components/schemas/TemplateOut'
+          type: array
+          title: Templates
+        parsed:
+          items:
+            $ref: '#/components/schemas/ParsedLineOut'
+          type: array
+          title: Parsed
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+      type: object
+      required:
+      - templates
+      - parsed
+      - stats
+      title: ParseResponse
     HTTPValidationError:
       properties:
         detail:
@@ -179,6 +169,29 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ParsedLineOut:
+      properties:
+        line:
+          type: string
+          title: Line
+        template_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Template Id
+        raw_template:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Raw Template
+        cache_hit:
+          type: boolean
+          title: Cache Hit
+          default: false
+      type: object
+      required:
+      - line
+      title: ParsedLineOut
     ValidationError:
       properties:
         loc:
@@ -205,16 +218,3 @@ components:
       - msg
       - type
       title: ValidationError
-    TemplateOut:
-      properties:
-        template_id:
-          type: string
-          title: Template Id
-        raw_template:
-          type: string
-          title: Raw Template
-      type: object
-      required:
-      - template_id
-      - raw_template
-      title: TemplateOut

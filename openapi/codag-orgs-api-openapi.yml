@@ -583,59 +583,6 @@ paths:
       - Orgs
 components:
   schemas:
-    UpdateOrgRequest:
-      properties:
-        slug:
-          anyOf:
-          - type: string
-            maxLength: 64
-            minLength: 2
-            pattern: ^[a-z0-9][a-z0-9-]*$
-          - type: 'null'
-          title: Slug
-        name:
-          anyOf:
-          - type: string
-            maxLength: 128
-            minLength: 1
-          - type: 'null'
-          title: Name
-        alerts_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Alerts Enabled
-      type: object
-      title: UpdateOrgRequest
-    CreateKeyRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 64
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - name
-      title: CreateKeyRequest
-    CreateOrgRequest:
-      properties:
-        slug:
-          type: string
-          maxLength: 64
-          minLength: 2
-          pattern: ^[a-z0-9][a-z0-9-]*$
-          title: Slug
-        name:
-          type: string
-          maxLength: 128
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - slug
-      - name
-      title: CreateOrgRequest
     SelfServeCreateRequest:
       properties:
         name:
@@ -667,6 +614,35 @@ components:
         forced to pick a real name + slug instead of getting "Gmail" inflicted
 
         on them. `name` and `slug` must be provided together when given.'
+    CreateOrgRequest:
+      properties:
+        slug:
+          type: string
+          maxLength: 64
+          minLength: 2
+          pattern: ^[a-z0-9][a-z0-9-]*$
+          title: Slug
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - slug
+      - name
+      title: CreateOrgRequest
+    CreateKeyRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: CreateKeyRequest
     HTTPValidationError:
       properties:
         detail:
@@ -676,6 +652,30 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    UpdateOrgRequest:
+      properties:
+        slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 2
+            pattern: ^[a-z0-9][a-z0-9-]*$
+          - type: 'null'
+          title: Slug
+        name:
+          anyOf:
+          - type: string
+            maxLength: 128
+            minLength: 1
+          - type: 'null'
+          title: Name
+        alerts_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Alerts Enabled
+      type: object
+      title: UpdateOrgRequest
     ValidationError:
       properties:
         loc:

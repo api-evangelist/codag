@@ -99,6 +99,46 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
+    CapsuleRequest:
+      properties:
+        lines:
+          items:
+            $ref: '#/components/schemas/LineRecord'
+          type: array
+          maxItems: 1000000
+          title: Lines
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        engine:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - inference
+            - deterministic
+          - type: 'null'
+          title: Engine
+      type: object
+      required:
+      - lines
+      title: CapsuleRequest
+    CapsuleResponse:
+      properties:
+        capsule:
+          additionalProperties: true
+          type: object
+          title: Capsule
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+      type: object
+      required:
+      - capsule
+      - stats
+      title: CapsuleResponse
     LineRecord:
       properties:
         line_id:
@@ -167,43 +207,3 @@ components:
       - msg
       - type
       title: ValidationError
-    CapsuleRequest:
-      properties:
-        lines:
-          items:
-            $ref: '#/components/schemas/LineRecord'
-          type: array
-          maxItems: 1000000
-          title: Lines
-        metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Metadata
-        engine:
-          anyOf:
-          - type: string
-            enum:
-            - auto
-            - inference
-            - deterministic
-          - type: 'null'
-          title: Engine
-      type: object
-      required:
-      - lines
-      title: CapsuleRequest
-    CapsuleResponse:
-      properties:
-        capsule:
-          additionalProperties: true
-          type: object
-          title: Capsule
-        stats:
-          $ref: '#/components/schemas/ParseStats'
-      type: object
-      required:
-      - capsule
-      - stats
-      title: CapsuleResponse
