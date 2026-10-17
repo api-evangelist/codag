@@ -34,6 +34,105 @@ paths:
       - Capsule
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LineRecord:
+      properties:
+        line_id:
+          type: integer
+          title: Line Id
+        message:
+          type: string
+          maxLength: 262144
+          title: Message
+        level:
+          anyOf:
+          - type: string
+            maxLength: 32
+          - type: 'null'
+          title: Level
+        timestamp:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Timestamp
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+      type: object
+      required:
+      - line_id
+      - message
+      title: LineRecord
+      description: One log record with metadata for capsule construction.
+    CapsuleResponse:
+      properties:
+        capsule:
+          additionalProperties: true
+          type: object
+          title: Capsule
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+      type: object
+      required:
+      - capsule
+      - stats
+      title: CapsuleResponse
+    CapsuleRequest:
+      properties:
+        lines:
+          items:
+            $ref: '#/components/schemas/LineRecord'
+          type: array
+          maxItems: 1000000
+          title: Lines
+        metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Metadata
+        engine:
+          anyOf:
+          - type: string
+            enum:
+            - auto
+            - inference
+            - deterministic
+          - type: 'null'
+          title: Engine
+      type: object
+      required:
+      - lines
+      title: CapsuleRequest
     ParseStats:
       properties:
         llm_calls:
@@ -99,79 +198,6 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
-    CapsuleRequest:
-      properties:
-        lines:
-          items:
-            $ref: '#/components/schemas/LineRecord'
-          type: array
-          maxItems: 1000000
-          title: Lines
-        metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Metadata
-        engine:
-          anyOf:
-          - type: string
-            enum:
-            - auto
-            - inference
-            - deterministic
-          - type: 'null'
-          title: Engine
-      type: object
-      required:
-      - lines
-      title: CapsuleRequest
-    CapsuleResponse:
-      properties:
-        capsule:
-          additionalProperties: true
-          type: object
-          title: Capsule
-        stats:
-          $ref: '#/components/schemas/ParseStats'
-      type: object
-      required:
-      - capsule
-      - stats
-      title: CapsuleResponse
-    LineRecord:
-      properties:
-        line_id:
-          type: integer
-          title: Line Id
-        message:
-          type: string
-          maxLength: 262144
-          title: Message
-        level:
-          anyOf:
-          - type: string
-            maxLength: 32
-          - type: 'null'
-          title: Level
-        timestamp:
-          anyOf:
-          - type: string
-            maxLength: 128
-          - type: 'null'
-          title: Timestamp
-        service:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Service
-      type: object
-      required:
-      - line_id
-      - message
-      title: LineRecord
-      description: One log record with metadata for capsule construction.
     HTTPValidationError:
       properties:
         detail:
@@ -181,29 +207,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError

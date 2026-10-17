@@ -112,33 +112,6 @@ paths:
       - Incident Memory
 components:
   schemas:
-    IncidentRawLogsResponse:
-      properties:
-        incident_id:
-          type: string
-          title: Incident Id
-        available:
-          type: boolean
-          title: Available
-          default: false
-        lines:
-          items:
-            type: string
-          type: array
-          title: Lines
-        line_count:
-          type: integer
-          title: Line Count
-          default: 0
-        truncated:
-          type: boolean
-          title: Truncated
-          default: false
-      type: object
-      required:
-      - incident_id
-      title: IncidentRawLogsResponse
-      description: Exact original input lines for an incident (admin on-demand viewer).
     IncidentMemorySummary:
       properties:
         incident_id:
@@ -237,6 +210,29 @@ components:
       - fingerprint
       - detected
       title: IncidentMemorySummary
+    IncidentMemoryGraphResponse:
+      properties:
+        incident:
+          $ref: '#/components/schemas/IncidentMemorySummary'
+        capsule:
+          additionalProperties: true
+          type: object
+          title: Capsule
+        compact_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Text
+        summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Summary
+      type: object
+      required:
+      - incident
+      - capsule
+      title: IncidentMemoryGraphResponse
     IncidentMemorySearchRequest:
       properties:
         q:
@@ -312,6 +308,33 @@ components:
           default: 20
       type: object
       title: IncidentMemorySearchRequest
+    IncidentRawLogsResponse:
+      properties:
+        incident_id:
+          type: string
+          title: Incident Id
+        available:
+          type: boolean
+          title: Available
+          default: false
+        lines:
+          items:
+            type: string
+          type: array
+          title: Lines
+        line_count:
+          type: integer
+          title: Line Count
+          default: 0
+        truncated:
+          type: boolean
+          title: Truncated
+          default: false
+      type: object
+      required:
+      - incident_id
+      title: IncidentRawLogsResponse
+      description: Exact original input lines for an incident (admin on-demand viewer).
     IncidentMemorySearchResponse:
       properties:
         incidents:
@@ -332,29 +355,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    IncidentMemoryGraphResponse:
-      properties:
-        incident:
-          $ref: '#/components/schemas/IncidentMemorySummary'
-        capsule:
-          additionalProperties: true
-          type: object
-          title: Capsule
-        compact_text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Text
-        summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Summary
-      type: object
-      required:
-      - incident
-      - capsule
-      title: IncidentMemoryGraphResponse
     ValidationError:
       properties:
         loc:

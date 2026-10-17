@@ -75,15 +75,22 @@ paths:
                 title: Response Stripe Webhook Api Billing Webhooks Stripe Post
 components:
   schemas:
-    PortalResponse:
+    CheckoutRequest:
       properties:
-        portal_url:
+        plan:
           type: string
-          title: Portal Url
+          pattern: ^(hobby|team|team_annual)$
+          title: Plan
+        deal_code:
+          anyOf:
+          - type: string
+            maxLength: 64
+          - type: 'null'
+          title: Deal Code
       type: object
       required:
-      - portal_url
-      title: PortalResponse
+      - plan
+      title: CheckoutRequest
     BillingStateResponse:
       properties:
         plan_tier:
@@ -154,15 +161,15 @@ components:
       - trial_ends_at
       - cancel_at_period_end
       title: BillingStateResponse
-    HTTPValidationError:
+    PortalResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        portal_url:
+          type: string
+          title: Portal Url
       type: object
-      title: HTTPValidationError
+      required:
+      - portal_url
+      title: PortalResponse
     CheckoutResponse:
       properties:
         checkout_url:
@@ -172,22 +179,15 @@ components:
       required:
       - checkout_url
       title: CheckoutResponse
-    CheckoutRequest:
+    HTTPValidationError:
       properties:
-        plan:
-          type: string
-          pattern: ^(hobby|team|team_annual)$
-          title: Plan
-        deal_code:
-          anyOf:
-          - type: string
-            maxLength: 64
-          - type: 'null'
-          title: Deal Code
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - plan
-      title: CheckoutRequest
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:

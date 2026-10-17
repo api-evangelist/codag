@@ -47,71 +47,6 @@ components:
       - template_id
       - raw_template
       title: TemplateOut
-    ParseStats:
-      properties:
-        llm_calls:
-          type: integer
-          title: Llm Calls
-        cache_hits:
-          type: integer
-          title: Cache Hits
-        unmatched:
-          type: integer
-          title: Unmatched
-        elapsed_ms:
-          type: integer
-          title: Elapsed Ms
-        incident_family_hits:
-          type: integer
-          title: Incident Family Hits
-          default: 0
-        incident_induced_templates:
-          type: integer
-          title: Incident Induced Templates
-          default: 0
-        global_cache_hits:
-          type: integer
-          title: Global Cache Hits
-          default: 0
-        global_shadow_hits:
-          type: integer
-          title: Global Shadow Hits
-          default: 0
-        global_shadow_agreements:
-          type: integer
-          title: Global Shadow Agreements
-          default: 0
-        global_shadow_disagreements:
-          type: integer
-          title: Global Shadow Disagreements
-          default: 0
-        total_patterns:
-          type: integer
-          title: Total Patterns
-          default: 0
-        candidate_patterns:
-          type: integer
-          title: Candidate Patterns
-          default: 0
-        dropped_patterns:
-          type: integer
-          title: Dropped Patterns
-          default: 0
-        cache_pattern_hits:
-          type: integer
-          title: Cache Pattern Hits
-          default: 0
-        global_cache_pattern_hits:
-          type: integer
-          title: Global Cache Pattern Hits
-          default: 0
-      type: object
-      required:
-      - llm_calls
-      - cache_hits
-      - unmatched
-      - elapsed_ms
-      title: ParseStats
     ParseRequest:
       properties:
         lines:
@@ -192,6 +127,71 @@ components:
       required:
       - line
       title: ParsedLineOut
+    ParseStats:
+      properties:
+        llm_calls:
+          type: integer
+          title: Llm Calls
+        cache_hits:
+          type: integer
+          title: Cache Hits
+        unmatched:
+          type: integer
+          title: Unmatched
+        elapsed_ms:
+          type: integer
+          title: Elapsed Ms
+        incident_family_hits:
+          type: integer
+          title: Incident Family Hits
+          default: 0
+        incident_induced_templates:
+          type: integer
+          title: Incident Induced Templates
+          default: 0
+        global_cache_hits:
+          type: integer
+          title: Global Cache Hits
+          default: 0
+        global_shadow_hits:
+          type: integer
+          title: Global Shadow Hits
+          default: 0
+        global_shadow_agreements:
+          type: integer
+          title: Global Shadow Agreements
+          default: 0
+        global_shadow_disagreements:
+          type: integer
+          title: Global Shadow Disagreements
+          default: 0
+        total_patterns:
+          type: integer
+          title: Total Patterns
+          default: 0
+        candidate_patterns:
+          type: integer
+          title: Candidate Patterns
+          default: 0
+        dropped_patterns:
+          type: integer
+          title: Dropped Patterns
+          default: 0
+        cache_pattern_hits:
+          type: integer
+          title: Cache Pattern Hits
+          default: 0
+        global_cache_pattern_hits:
+          type: integer
+          title: Global Cache Pattern Hits
+          default: 0
+      type: object
+      required:
+      - llm_calls
+      - cache_hits
+      - unmatched
+      - elapsed_ms
+      title: ParseStats
     ValidationError:
       properties:
         loc:

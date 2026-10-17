@@ -515,6 +515,21 @@ components:
       required:
       - name
       title: CreateKeyRequest
+    CreateInviteRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        role:
+          type: string
+          pattern: ^(admin|member)$
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CreateInviteRequest
     HTTPValidationError:
       properties:
         detail:
@@ -574,18 +589,3 @@ components:
       - msg
       - type
       title: ValidationError
-    CreateInviteRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-        role:
-          type: string
-          pattern: ^(admin|member)$
-          title: Role
-          default: member
-      type: object
-      required:
-      - email
-      title: CreateInviteRequest

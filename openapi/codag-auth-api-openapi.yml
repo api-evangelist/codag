@@ -140,32 +140,70 @@ paths:
       - Auth
 components:
   schemas:
-    GoogleAuthResponse:
+    UserOut:
       properties:
-        access_token:
+        id:
+          type: integer
+          title: Id
+        email:
           type: string
-          title: Access Token
-        user:
-          $ref: '#/components/schemas/UserOut'
-        orgs:
-          items:
-            $ref: '#/components/schemas/OrgOut'
-          type: array
-          title: Orgs
-        is_global_admin:
-          type: boolean
-          title: Is Global Admin
-        accepted_invite:
-          type: boolean
-          title: Accepted Invite
-          default: false
+          title: Email
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        avatar_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Avatar Url
       type: object
       required:
-      - access_token
-      - user
-      - orgs
-      - is_global_admin
-      title: GoogleAuthResponse
+      - id
+      - email
+      title: UserOut
+    OrgOut:
+      properties:
+        id:
+          type: string
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        name:
+          type: string
+          title: Name
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      title: OrgOut
+    ConsoleSessionRequest:
+      properties:
+        org_id:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 1
+          - type: 'null'
+          title: Org Id
+        org_slug:
+          anyOf:
+          - type: string
+            maxLength: 64
+            minLength: 2
+            pattern: ^[a-z0-9][a-z0-9-]*$
+          - type: 'null'
+          title: Org Slug
+      type: object
+      title: ConsoleSessionRequest
     ConsoleSessionResponse:
       properties:
         token:
@@ -205,28 +243,32 @@ components:
       - orgs
       - is_global_admin
       title: MeResponse
-    OrgOut:
+    GoogleAuthResponse:
       properties:
-        id:
+        access_token:
           type: string
-          title: Id
-        slug:
-          type: string
-          title: Slug
-        name:
-          type: string
-          title: Name
-        role:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Role
+          title: Access Token
+        user:
+          $ref: '#/components/schemas/UserOut'
+        orgs:
+          items:
+            $ref: '#/components/schemas/OrgOut'
+          type: array
+          title: Orgs
+        is_global_admin:
+          type: boolean
+          title: Is Global Admin
+        accepted_invite:
+          type: boolean
+          title: Accepted Invite
+          default: false
       type: object
       required:
-      - id
-      - slug
-      - name
-      title: OrgOut
+      - access_token
+      - user
+      - orgs
+      - is_global_admin
+      title: GoogleAuthResponse
     GoogleAuthRequest:
       properties:
         code:
@@ -245,6 +287,15 @@ components:
       - code
       - redirect_uri
       title: GoogleAuthRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     UpdateProfileRequest:
       properties:
         name:
@@ -255,57 +306,6 @@ components:
           title: Name
       type: object
       title: UpdateProfileRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UserOut:
-      properties:
-        id:
-          type: integer
-          title: Id
-        email:
-          type: string
-          title: Email
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        avatar_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Avatar Url
-      type: object
-      required:
-      - id
-      - email
-      title: UserOut
-    ConsoleSessionRequest:
-      properties:
-        org_id:
-          anyOf:
-          - type: string
-            maxLength: 64
-            minLength: 1
-          - type: 'null'
-          title: Org Id
-        org_slug:
-          anyOf:
-          - type: string
-            maxLength: 64
-            minLength: 2
-            pattern: ^[a-z0-9][a-z0-9-]*$
-          - type: 'null'
-          title: Org Slug
-      type: object
-      title: ConsoleSessionRequest
     ValidationError:
       properties:
         loc:

@@ -583,6 +583,59 @@ paths:
       - Orgs
 components:
   schemas:
+    CreateOrgRequest:
+      properties:
+        slug:
+          type: string
+          maxLength: 64
+          minLength: 2
+          pattern: ^[a-z0-9][a-z0-9-]*$
+          title: Slug
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - slug
+      - name
+      title: CreateOrgRequest
+    CreateKeyRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: CreateKeyRequest
+    CreateInviteRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        role:
+          type: string
+          pattern: ^(admin|member)$
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CreateInviteRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     SelfServeCreateRequest:
       properties:
         name:
@@ -614,44 +667,6 @@ components:
         forced to pick a real name + slug instead of getting "Gmail" inflicted
 
         on them. `name` and `slug` must be provided together when given.'
-    CreateOrgRequest:
-      properties:
-        slug:
-          type: string
-          maxLength: 64
-          minLength: 2
-          pattern: ^[a-z0-9][a-z0-9-]*$
-          title: Slug
-        name:
-          type: string
-          maxLength: 128
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - slug
-      - name
-      title: CreateOrgRequest
-    CreateKeyRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 64
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - name
-      title: CreateKeyRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     UpdateOrgRequest:
       properties:
         slug:
@@ -702,18 +717,3 @@ components:
       - msg
       - type
       title: ValidationError
-    CreateInviteRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-        role:
-          type: string
-          pattern: ^(admin|member)$
-          title: Role
-          default: member
-      type: object
-      required:
-      - email
-      title: CreateInviteRequest
