@@ -60,6 +60,32 @@ paths:
       - CLI
 components:
   schemas:
+    CLIConfirmResponse:
+      properties:
+        ok:
+          type: boolean
+          title: Ok
+        user_code:
+          type: string
+          title: User Code
+        org:
+          type: string
+          title: Org
+      type: object
+      required:
+      - ok
+      - user_code
+      - org
+      title: CLIConfirmResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -111,29 +137,3 @@ components:
       required:
       - user_code
       title: CLIConfirmRequest
-    CLIConfirmResponse:
-      properties:
-        ok:
-          type: boolean
-          title: Ok
-        user_code:
-          type: string
-          title: User Code
-        org:
-          type: string
-          title: Org
-      type: object
-      required:
-      - ok
-      - user_code
-      - org
-      title: CLIConfirmResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

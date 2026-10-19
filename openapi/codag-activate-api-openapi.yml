@@ -11,7 +11,7 @@ paths:
       summary: Preview Activation Code
       description: 'Public (unauthenticated) preview so the landing page can show what the
 
-        link grants *before* Google sign-in. Reveals kind, trial/opt-out length,
+        link grants *before* Google sign-in. Reveals kind, legacy trial length,
 
         validity, and the label (prospect-facing copy on the deal card) — never
 
@@ -48,11 +48,12 @@ paths:
   /api/activate/{code}/redeem:
     post:
       summary: Redeem Activation Code
-      description: 'Redeem an activation code: grant the caller''s org a time-boxed inference
+      description: 'Redeem an activation code for PAYG, Enterprise, or a legacy trial.
 
-        trial. Idempotent per (code, org) — re-clicking neither double-counts nor
 
-        re-extends.'
+        All paths are idempotent per (code, org). Customer-acquisition links use
+
+        the PAYG path; historical trial rows remain supported internally only.'
       operationId: redeem_activation_code_api_activate__code__redeem_post
       parameters:
       - name: code
@@ -97,6 +98,15 @@ components:
           title: Org Id
       type: object
       title: RedeemActivationRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -123,12 +133,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

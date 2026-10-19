@@ -258,6 +258,16 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/codag-oauth-api-openapi.yml
+- aid: codag:codag-agent-cost-api
+  name: Codag Agent Cost API
+  description: The agent-cost API from Codag — 12 operation(s) for agent-cost.
+  humanURL: https://codag.ai/docs
+  baseURL: https://api.codag.ai
+  tags:
+  - agent-cost
+  properties:
+  - type: OpenAPI
+    url: openapi/codag-agent-cost-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

@@ -80,6 +80,15 @@ paths:
       - Admin
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     CreateActivationCodeRequest:
       properties:
         label:
@@ -90,9 +99,9 @@ components:
           title: Label
         kind:
           type: string
-          pattern: ^(trial|team_annual_deal)$
+          pattern: ^(team_monthly_checkout|enterprise_contract)$
           title: Kind
-          default: trial
+          default: team_monthly_checkout
         trial_days:
           type: integer
           maximum: 365.0
@@ -148,12 +157,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

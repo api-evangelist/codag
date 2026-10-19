@@ -111,6 +111,36 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
       tags:
       - Orgs
+  /api/orgs/domain-match:
+    get:
+      summary: Get Domain Match
+      description: 'Does the caller''s verified email domain already have a workspace?
+
+
+        Powers the dashboard''s "Join {workspace}" affordance so a teammate sees
+
+        they''re joining their company''s existing workspace, not creating a new
+
+        one. Read-only preview of what `POST /orgs/self-serve` would auto-join.
+
+
+        Returns `{"org": {"id", "name", "slug"}}` when a workspace-domain caller
+
+        with no org yet would auto-join an existing org, else `{"org": null}`
+
+        (already a member, consumer email, or no match).'
+      operationId: get_domain_match_api_orgs_domain_match_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Get Domain Match Api Orgs Domain Match Get
+      tags:
+      - Orgs
   /api/orgs/{slug}:
     get:
       summary: Get Org
@@ -583,50 +613,32 @@ paths:
       - Orgs
 components:
   schemas:
-    CreateOrgRequest:
+    ValidationError:
       properties:
-        slug:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          maxLength: 64
-          minLength: 2
-          pattern: ^[a-z0-9][a-z0-9-]*$
-          title: Slug
-        name:
+          title: Message
+        type:
           type: string
-          maxLength: 128
-          minLength: 1
-          title: Name
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - slug
-      - name
-      title: CreateOrgRequest
-    CreateKeyRequest:
-      properties:
-        name:
-          type: string
-          maxLength: 64
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - name
-      title: CreateKeyRequest
-    CreateInviteRequest:
-      properties:
-        email:
-          type: string
-          format: email
-          title: Email
-        role:
-          type: string
-          pattern: ^(admin|member)$
-          title: Role
-          default: member
-      type: object
-      required:
-      - email
-      title: CreateInviteRequest
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -667,6 +679,50 @@ components:
         forced to pick a real name + slug instead of getting "Gmail" inflicted
 
         on them. `name` and `slug` must be provided together when given.'
+    CreateKeyRequest:
+      properties:
+        name:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: CreateKeyRequest
+    CreateOrgRequest:
+      properties:
+        slug:
+          type: string
+          maxLength: 64
+          minLength: 2
+          pattern: ^[a-z0-9][a-z0-9-]*$
+          title: Slug
+        name:
+          type: string
+          maxLength: 128
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - slug
+      - name
+      title: CreateOrgRequest
+    CreateInviteRequest:
+      properties:
+        email:
+          type: string
+          format: email
+          title: Email
+        role:
+          type: string
+          pattern: ^(admin|member)$
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CreateInviteRequest
     UpdateOrgRequest:
       properties:
         slug:
@@ -691,29 +747,3 @@ components:
           title: Alerts Enabled
       type: object
       title: UpdateOrgRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError

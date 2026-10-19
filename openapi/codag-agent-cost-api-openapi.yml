@@ -1,0 +1,911 @@
+openapi: 3.2.0
+info:
+  title: infra-logs templater Agent Cost API
+  description: Token compression for log streams. POST raw logs, get back templates or capsules.
+  version: 0.1.0
+tags:
+- name: agent-cost
+paths:
+  /v1/actions/reduce:
+    post:
+      tags:
+      - agent-cost
+      summary: Reduce Action
+      description: Reduce one eligible tool result without retaining its content.
+      operationId: reduce_action_v1_actions_reduce_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionEnvelope'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/metrics/batch:
+    post:
+      tags:
+      - agent-cost
+      summary: Record Metrics
+      operationId: record_metrics_v1_metrics_batch_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MetricsBatch'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: integer
+                type: object
+                title: Response Record Metrics V1 Metrics Batch Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/usage/summary:
+    get:
+      tags:
+      - agent-cost
+      summary: Usage Summary
+      operationId: usage_summary_v1_usage_summary_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Usage Summary V1 Usage Summary Get
+  /v1/usage/timeseries:
+    get:
+      tags:
+      - agent-cost
+      summary: Usage Timeseries
+      operationId: usage_timeseries_v1_usage_timeseries_get
+      parameters:
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 90
+          minimum: 1
+          default: 30
+          title: Days
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Usage Timeseries V1 Usage Timeseries Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/usage/breakdown:
+    get:
+      tags:
+      - agent-cost
+      summary: Usage Breakdown
+      operationId: usage_breakdown_v1_usage_breakdown_get
+      parameters:
+      - name: dimension
+        in: query
+        required: false
+        schema:
+          enum:
+          - action
+          - provider
+          - model
+          - harness
+          - member
+          type: string
+          default: action
+          title: Dimension
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 90
+          minimum: 1
+          default: 30
+          title: Days
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Usage Breakdown V1 Usage Breakdown Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/usage/reliability:
+    get:
+      tags:
+      - agent-cost
+      summary: Usage Reliability
+      operationId: usage_reliability_v1_usage_reliability_get
+      parameters:
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 90
+          minimum: 1
+          default: 30
+          title: Days
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Usage Reliability V1 Usage Reliability Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/trials/report:
+    get:
+      tags:
+      - agent-cost
+      summary: Trial Report
+      operationId: trial_report_v1_trials_report_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Trial Report V1 Trials Report Get
+  /v1/model-prices:
+    get:
+      tags:
+      - agent-cost
+      summary: Model Prices
+      operationId: model_prices_v1_model_prices_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Model Prices V1 Model Prices Get
+  /v1/service/status:
+    get:
+      tags:
+      - agent-cost
+      summary: Service Status
+      operationId: service_status_v1_service_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Service Status V1 Service Status Get
+  /v1/auth/status:
+    get:
+      tags:
+      - agent-cost
+      summary: Auth Status
+      description: Return the workspace and optimization entitlement selected by a CLI credential.
+      operationId: auth_status_v1_auth_status_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthStatus'
+  /v1/actions/self-test:
+    post:
+      tags:
+      - agent-cost
+      summary: Action Self Test
+      description: Exercise the configured production reducer with synthetic, non-customer data.
+      operationId: action_self_test_v1_actions_self_test_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionSelfTest'
+  /v1/workspace/policy:
+    get:
+      tags:
+      - agent-cost
+      summary: Get Workspace Policy
+      operationId: get_workspace_policy_v1_workspace_policy_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspacePolicy'
+    put:
+      tags:
+      - agent-cost
+      summary: Set Workspace Policy
+      operationId: set_workspace_policy_v1_workspace_policy_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspacePolicyWrite'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspacePolicy'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ActionSelfTest:
+      properties:
+        ok:
+          type: boolean
+          title: Ok
+        reducer_model:
+          type: string
+          title: Reducer Model
+        decision:
+          type: string
+          enum:
+          - passthrough
+          - reduced
+          title: Decision
+        input_bytes:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Input Bytes
+        output_bytes:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Output Bytes
+        selector_count:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Selector Count
+        elapsed_ms:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Elapsed Ms
+      additionalProperties: false
+      type: object
+      required:
+      - ok
+      - reducer_model
+      - decision
+      - input_bytes
+      - output_bytes
+      - selector_count
+      - elapsed_ms
+      title: ActionSelfTest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ActionEnvelope:
+      properties:
+        id:
+          type: string
+          maxLength: 256
+          minLength: 1
+          title: Id
+        session_id:
+          type: string
+          maxLength: 256
+          title: Session Id
+          default: ''
+        harness:
+          type: string
+          maxLength: 128
+          title: Harness
+          default: ''
+        provider:
+          type: string
+          maxLength: 128
+          title: Provider
+          default: ''
+        model:
+          type: string
+          maxLength: 256
+          title: Model
+          default: ''
+        kind:
+          type: string
+          enum:
+          - unknown
+          - log
+          - test_build_lint
+          - search
+          - file_list
+          - document_read
+          - agent_handoff
+          - query
+          - verbatim
+          title: Kind
+        tool:
+          $ref: '#/components/schemas/ToolCall'
+        result:
+          type: string
+          maxLength: 33554432
+          title: Result
+        task:
+          type: string
+          maxLength: 32768
+          title: Task
+          default: ''
+        intent:
+          type: string
+          maxLength: 8192
+          title: Intent
+          default: ''
+        retrieval_handle:
+          type: string
+          maxLength: 256
+          title: Retrieval Handle
+          default: ''
+        client_version:
+          type: string
+          maxLength: 128
+          title: Client Version
+          default: ''
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - kind
+      - tool
+      - result
+      title: ActionEnvelope
+    ToolCall:
+      properties:
+        id:
+          type: string
+          maxLength: 256
+          title: Id
+          default: ''
+        name:
+          type: string
+          maxLength: 512
+          minLength: 1
+          title: Name
+        arguments:
+          title: Arguments
+      additionalProperties: false
+      type: object
+      required:
+      - name
+      title: ToolCall
+    MetricEvent:
+      properties:
+        id:
+          type: string
+          maxLength: 128
+          minLength: 1
+          pattern: ^[A-Za-z0-9_.:@+~-]*$
+          title: Id
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+        session_id:
+          type: string
+          maxLength: 256
+          pattern: ^[A-Za-z0-9_.:@+~-]*$
+          title: Session Id
+          default: ''
+        install_id:
+          type: string
+          maxLength: 256
+          pattern: ^[A-Za-z0-9_.:@+~-]*$
+          title: Install Id
+          default: ''
+        harness:
+          type: string
+          maxLength: 128
+          pattern: ^[A-Za-z0-9_.:+-]*$
+          title: Harness
+          default: ''
+        provider:
+          type: string
+          maxLength: 128
+          pattern: ^[A-Za-z0-9_.:+-]*$
+          title: Provider
+          default: ''
+        model:
+          type: string
+          maxLength: 256
+          pattern: ^[A-Za-z0-9_.:+-]*$
+          title: Model
+          default: ''
+        action_kind:
+          type: string
+          enum:
+          - unknown
+          - log
+          - test_build_lint
+          - search
+          - file_list
+          - document_read
+          - agent_handoff
+          - query
+          - verbatim
+          title: Action Kind
+        decision:
+          type: string
+          maxLength: 64
+          minLength: 1
+          pattern: ^[A-Za-z0-9_.:+-]*$
+          title: Decision
+        reason:
+          type: string
+          maxLength: 256
+          pattern: ^[A-Za-z0-9_.:+-]*$
+          title: Reason
+          default: ''
+        original_bytes:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Original Bytes
+          default: 0
+        replacement_bytes:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Replacement Bytes
+          default: 0
+        provider_input_tokens:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Provider Input Tokens
+          default: 0
+        provider_output_tokens:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Provider Output Tokens
+          default: 0
+        provider_cache_read_tokens:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Provider Cache Read Tokens
+          default: 0
+        provider_cache_write_tokens:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Provider Cache Write Tokens
+          default: 0
+        estimated_cost_microusd:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Estimated Cost Microusd
+          default: 0
+        reducer_cost_microusd:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Reducer Cost Microusd
+          default: 0
+        elapsed_ms:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Elapsed Ms
+          default: 0
+        turn_count:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Turn Count
+          default: 0
+        retry_count:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Retry Count
+          default: 0
+        reread_count:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Reread Count
+          default: 0
+        retrieval_count:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Retrieval Count
+          default: 0
+        client_version:
+          type: string
+          maxLength: 128
+          pattern: ^[A-Za-z0-9_.:+-]*$
+          title: Client Version
+          default: ''
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - occurred_at
+      - action_kind
+      - decision
+      title: MetricEvent
+      description: Contentless, deduplicated event accepted from the local proxy.
+    WorkspacePolicy:
+      properties:
+        mode:
+          type: string
+          enum:
+          - disabled
+          - audit
+          - optimize
+          title: Mode
+        pinned_client_version:
+          type: string
+          maxLength: 128
+          title: Pinned Client Version
+          default: ''
+        enabled_actions:
+          items:
+            type: string
+            enum:
+            - unknown
+            - log
+            - test_build_lint
+            - search
+            - file_list
+            - document_read
+            - agent_handoff
+            - query
+            - verbatim
+          type: array
+          maxItems: 16
+          title: Enabled Actions
+        required_metrics:
+          type: boolean
+          title: Required Metrics
+          default: true
+      additionalProperties: false
+      type: object
+      required:
+      - mode
+      title: WorkspacePolicy
+    WorkspacePolicyWrite:
+      properties:
+        mode:
+          type: string
+          enum:
+          - disabled
+          - audit
+          - optimize
+          title: Mode
+        pinned_client_version:
+          type: string
+          maxLength: 128
+          title: Pinned Client Version
+          default: ''
+        enabled_actions:
+          items:
+            type: string
+            enum:
+            - unknown
+            - log
+            - test_build_lint
+            - search
+            - file_list
+            - document_read
+            - agent_handoff
+            - query
+            - verbatim
+          type: array
+          maxItems: 16
+          title: Enabled Actions
+        required_metrics:
+          type: boolean
+          title: Required Metrics
+          default: true
+      additionalProperties: false
+      type: object
+      required:
+      - mode
+      title: WorkspacePolicyWrite
+    AuthStatus:
+      properties:
+        authenticated:
+          type: boolean
+          title: Authenticated
+        credential_type:
+          type: string
+          enum:
+          - api_key
+          - oauth
+          title: Credential Type
+        org_id:
+          type: string
+          title: Org Id
+        org_name:
+          type: string
+          title: Org Name
+        plan_tier:
+          type: string
+          title: Plan Tier
+        subscription_status:
+          type: string
+          title: Subscription Status
+        role:
+          type: string
+          title: Role
+          default: ''
+        trial_active:
+          type: boolean
+          title: Trial Active
+        trial_ends_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Trial Ends At
+        optimization_entitled:
+          type: boolean
+          title: Optimization Entitled
+        policy:
+          $ref: '#/components/schemas/WorkspacePolicy'
+      additionalProperties: false
+      type: object
+      required:
+      - authenticated
+      - credential_type
+      - org_id
+      - org_name
+      - plan_tier
+      - subscription_status
+      - trial_active
+      - optimization_entitled
+      - policy
+      title: AuthStatus
+    MetricsBatch:
+      properties:
+        events:
+          items:
+            $ref: '#/components/schemas/MetricEvent'
+          type: array
+          maxItems: 1000
+          minItems: 1
+          title: Events
+      additionalProperties: false
+      type: object
+      required:
+      - events
+      title: MetricsBatch
+    ActionResponse:
+      properties:
+        action_id:
+          type: string
+          title: Action Id
+        kind:
+          type: string
+          enum:
+          - unknown
+          - log
+          - test_build_lint
+          - search
+          - file_list
+          - document_read
+          - agent_handoff
+          - query
+          - verbatim
+          title: Kind
+        decision:
+          type: string
+          enum:
+          - passthrough
+          - reduced
+          title: Decision
+        content:
+          type: string
+          title: Content
+          default: ''
+        reason:
+          type: string
+          title: Reason
+          default: ''
+        selectors:
+          items:
+            $ref: '#/components/schemas/Selector'
+          type: array
+          maxItems: 64
+          title: Selectors
+        usage:
+          $ref: '#/components/schemas/ActionUsage'
+      additionalProperties: false
+      type: object
+      required:
+      - action_id
+      - kind
+      - decision
+      - usage
+      title: ActionResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Selector:
+      properties:
+        id:
+          type: string
+          maxLength: 128
+          minLength: 1
+          pattern: ^[A-Za-z0-9_.:-]+$
+          title: Id
+        label:
+          type: string
+          maxLength: 512
+          title: Label
+          default: ''
+        type:
+          type: string
+          enum:
+          - lines
+          - json_path
+          - group
+          title: Type
+        start:
+          type: integer
+          minimum: 0.0
+          title: Start
+          default: 0
+        end:
+          type: integer
+          minimum: 0.0
+          title: End
+          default: 0
+        json_path:
+          type: string
+          maxLength: 1024
+          title: Json Path
+          default: ''
+        group:
+          type: string
+          maxLength: 256
+          pattern: ^[A-Za-z0-9_.:/+~-]*$
+          title: Group
+          default: ''
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - type
+      title: Selector
+    ActionUsage:
+      properties:
+        bytes_in:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Bytes In
+        bytes_out:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Bytes Out
+        reducer_input_tokens:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Reducer Input Tokens
+          default: 0
+        reducer_output_tokens:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Reducer Output Tokens
+          default: 0
+        reducer_cost_microusd:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Reducer Cost Microusd
+          default: 0
+        elapsed_ms:
+          type: integer
+          maximum: 9.223372036854776e+18
+          minimum: 0.0
+          title: Elapsed Ms
+          default: 0
+      additionalProperties: false
+      type: object
+      required:
+      - bytes_in
+      - bytes_out
+      title: ActionUsage

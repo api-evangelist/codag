@@ -112,6 +112,168 @@ paths:
       - Incident Memory
 components:
   schemas:
+    IncidentMemoryGraphResponse:
+      properties:
+        incident:
+          $ref: '#/components/schemas/IncidentMemorySummary'
+        capsule:
+          additionalProperties: true
+          type: object
+          title: Capsule
+        compact_text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Text
+        summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Summary
+      type: object
+      required:
+      - incident
+      - capsule
+      title: IncidentMemoryGraphResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    IncidentMemorySearchResponse:
+      properties:
+        incidents:
+          items:
+            $ref: '#/components/schemas/IncidentMemorySummary'
+          type: array
+          title: Incidents
+      type: object
+      required:
+      - incidents
+      title: IncidentMemorySearchResponse
+    IncidentRawLogsResponse:
+      properties:
+        incident_id:
+          type: string
+          title: Incident Id
+        available:
+          type: boolean
+          title: Available
+          default: false
+        lines:
+          items:
+            type: string
+          type: array
+          title: Lines
+        line_count:
+          type: integer
+          title: Line Count
+          default: 0
+        truncated:
+          type: boolean
+          title: Truncated
+          default: false
+      type: object
+      required:
+      - incident_id
+      title: IncidentRawLogsResponse
+      description: Exact original input lines for an incident (admin on-demand viewer).
+    IncidentMemorySearchRequest:
+      properties:
+        q:
+          anyOf:
+          - type: string
+            maxLength: 512
+          - type: 'null'
+          title: Q
+        incident_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Incident Id
+        fingerprint:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Fingerprint
+        family_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Family Id
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+        source:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Source
+        incident_type:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Incident Type
+        severity:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Severity
+        template_id:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Template Id
+        role:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Role
+        detected:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Detected
+        limit:
+          type: integer
+          maximum: 100.0
+          minimum: 1.0
+          title: Limit
+          default: 20
+      type: object
+      title: IncidentMemorySearchRequest
     IncidentMemorySummary:
       properties:
         incident_id:
@@ -210,142 +372,6 @@ components:
       - fingerprint
       - detected
       title: IncidentMemorySummary
-    IncidentMemoryGraphResponse:
-      properties:
-        incident:
-          $ref: '#/components/schemas/IncidentMemorySummary'
-        capsule:
-          additionalProperties: true
-          type: object
-          title: Capsule
-        compact_text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Text
-        summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Summary
-      type: object
-      required:
-      - incident
-      - capsule
-      title: IncidentMemoryGraphResponse
-    IncidentMemorySearchRequest:
-      properties:
-        q:
-          anyOf:
-          - type: string
-            maxLength: 512
-          - type: 'null'
-          title: Q
-        incident_id:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Incident Id
-        fingerprint:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Fingerprint
-        family_id:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Family Id
-        service:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Service
-        source:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Source
-        incident_type:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Incident Type
-        severity:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Severity
-        template_id:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Template Id
-        role:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Role
-        detected:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Detected
-        limit:
-          type: integer
-          maximum: 100.0
-          minimum: 1.0
-          title: Limit
-          default: 20
-      type: object
-      title: IncidentMemorySearchRequest
-    IncidentRawLogsResponse:
-      properties:
-        incident_id:
-          type: string
-          title: Incident Id
-        available:
-          type: boolean
-          title: Available
-          default: false
-        lines:
-          items:
-            type: string
-          type: array
-          title: Lines
-        line_count:
-          type: integer
-          title: Line Count
-          default: 0
-        truncated:
-          type: boolean
-          title: Truncated
-          default: false
-      type: object
-      required:
-      - incident_id
-      title: IncidentRawLogsResponse
-      description: Exact original input lines for an incident (admin on-demand viewer).
-    IncidentMemorySearchResponse:
-      properties:
-        incidents:
-          items:
-            $ref: '#/components/schemas/IncidentMemorySummary'
-          type: array
-          title: Incidents
-      type: object
-      required:
-      - incidents
-      title: IncidentMemorySearchResponse
     HTTPValidationError:
       properties:
         detail:
@@ -355,29 +381,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError

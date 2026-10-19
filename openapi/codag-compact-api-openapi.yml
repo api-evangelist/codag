@@ -84,93 +84,32 @@ paths:
       - Compact
 components:
   schemas:
-    LineRecord:
+    ValidationError:
       properties:
-        line_id:
-          type: integer
-          title: Line Id
-        message:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          maxLength: 262144
           title: Message
-        level:
-          anyOf:
-          - type: string
-            maxLength: 32
-          - type: 'null'
-          title: Level
-        timestamp:
-          anyOf:
-          - type: string
-            maxLength: 128
-          - type: 'null'
-          title: Timestamp
-        service:
-          anyOf:
-          - type: string
-            maxLength: 256
-          - type: 'null'
-          title: Service
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - line_id
-      - message
-      title: LineRecord
-      description: One log record with metadata for capsule construction.
-    CompactJobResponse:
-      properties:
-        job_id:
-          type: string
-          title: Job Id
-        status:
-          type: string
-          title: Status
-        text:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Text
-        stats:
-          anyOf:
-          - $ref: '#/components/schemas/ParseStats'
-          - type: 'null'
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-      type: object
-      required:
-      - job_id
-      - status
-      title: CompactJobResponse
-    CompactResponse:
-      properties:
-        text:
-          type: string
-          title: Text
-        stats:
-          $ref: '#/components/schemas/ParseStats'
-        compact_engine:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Engine
-        compact_fallback:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Fallback
-        compact_error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Compact Error
-      type: object
-      required:
-      - text
-      - stats
-      title: CompactResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
     CapsuleRequest:
       properties:
         lines:
@@ -185,45 +124,10 @@ components:
             type: object
           - type: 'null'
           title: Metadata
-        engine:
-          anyOf:
-          - type: string
-            enum:
-            - auto
-            - inference
-            - deterministic
-          - type: 'null'
-          title: Engine
       type: object
       required:
       - lines
       title: CapsuleRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CompactJobCreateResponse:
-      properties:
-        job_id:
-          type: string
-          title: Job Id
-        status:
-          type: string
-          title: Status
-        poll_url:
-          type: string
-          title: Poll Url
-      type: object
-      required:
-      - job_id
-      - status
-      - poll_url
-      title: CompactJobCreateResponse
     ParseStats:
       properties:
         llm_calls:
@@ -289,29 +193,116 @@ components:
       - unmatched
       - elapsed_ms
       title: ParseStats
-    ValidationError:
+    CompactResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        text:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Text
+        stats:
+          $ref: '#/components/schemas/ParseStats'
+        compact_engine:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Engine
+        compact_fallback:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Fallback
+        compact_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Compact Error
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - text
+      - stats
+      title: CompactResponse
+    CompactJobResponse:
+      properties:
+        job_id:
+          type: string
+          title: Job Id
+        status:
+          type: string
+          title: Status
+        text:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Text
+        stats:
+          anyOf:
+          - $ref: '#/components/schemas/ParseStats'
+          - type: 'null'
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - job_id
+      - status
+      title: CompactJobResponse
+    CompactJobCreateResponse:
+      properties:
+        job_id:
+          type: string
+          title: Job Id
+        status:
+          type: string
+          title: Status
+        poll_url:
+          type: string
+          title: Poll Url
+      type: object
+      required:
+      - job_id
+      - status
+      - poll_url
+      title: CompactJobCreateResponse
+    LineRecord:
+      properties:
+        line_id:
+          type: integer
+          title: Line Id
+        message:
+          type: string
+          maxLength: 262144
+          title: Message
+        level:
+          anyOf:
+          - type: string
+            maxLength: 32
+          - type: 'null'
+          title: Level
+        timestamp:
+          anyOf:
+          - type: string
+            maxLength: 128
+          - type: 'null'
+          title: Timestamp
+        service:
+          anyOf:
+          - type: string
+            maxLength: 256
+          - type: 'null'
+          title: Service
+      type: object
+      required:
+      - line_id
+      - message
+      title: LineRecord
+      description: One log record with metadata for capsule construction.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

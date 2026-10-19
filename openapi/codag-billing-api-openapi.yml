@@ -45,6 +45,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /api/billing/credits/checkout:
+    post:
+      tags:
+      - Billing
+      summary: Create Credit Pack Checkout
+      description: 'One-time Stripe Checkout to buy a prepaid credit pack (PAYG tier).
+
+
+        Unlike the subscription checkout, this is ``mode="payment"`` — a single
+
+        charge of ``credits × $0.15`` with no recurring plan. The card is collected
+
+        here (a PAYG org needs none until its first purchase). Multiple concurrent
+
+        purchases are legitimate, so this does NOT use the one-subscription-per-org
+
+        single-flight guard; a Stripe idempotency_key guards double-clicks and the
+
+        webhook credits the ledger idempotently via a UNIQUE stripe_ref.'
+      operationId: create_credit_pack_checkout_api_billing_credits_checkout_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditPackCheckoutRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditPackCheckoutResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /api/billing/portal:
     post:
       tags:
@@ -58,6 +97,100 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PortalResponse'
+  /api/billing/monthly-switch-portal:
+    post:
+      tags:
+      - Billing
+      summary: Create Monthly Switch Portal
+      description: 'Switch an annual Team subscription to monthly.
+
+
+        Paid annual subscribers get Stripe''s confirmation UI: the server does not
+
+        mutate the subscription; Stripe shows the exact unused-time credit and
+
+        applies the update only after the customer explicitly confirms it.
+
+
+        TRIALING annual subscribers (deal-link 30-day opt-out window) are switched
+
+        directly with `trial_end="now"`: monthly has no trial by policy, so the
+
+        switch ends the window and charges the first $499 immediately. The console
+
+        button states the charge; `error_if_incomplete` keeps the subscription
+
+        unchanged if the card declines.'
+      operationId: create_monthly_switch_portal_api_billing_monthly_switch_portal_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonthlySwitchPortalRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonthlySwitchPortalResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/billing/cancel:
+    post:
+      tags:
+      - Billing
+      summary: Cancel With Refund
+      description: 'Self-serve cancel-and-refund within the 14-day money-back window.
+
+
+        Both sides happen immediately: the Stripe subscription is canceled now
+
+        (not at period end) and the original charge is refunded in full now.
+
+        Access ends immediately — there is no grace period. A cancellation
+
+        reason is required (see `_CANCEL_REASON_PATTERN`) so we have a record of
+
+        why customers are refunding.
+
+
+        Order matters on failure: refund first, then cancel. If the refund call
+
+        fails we stop — the customer keeps their subscription and we haven''t
+
+        taken an action we can''t undo. If cancel fails *after* a successful
+
+        refund, the org is left as-is (still paid) rather than silently losing
+
+        access with no subscription to show for it; that case needs a human
+
+        follow-up, which the audit row surfaces.'
+      operationId: cancel_with_refund_api_billing_cancel_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelfServeCancelRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelfServeCancelResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /api/billing/webhooks/stripe:
     post:
       tags:
@@ -75,22 +208,28 @@ paths:
                 title: Response Stripe Webhook Api Billing Webhooks Stripe Post
 components:
   schemas:
-    CheckoutRequest:
+    CheckoutResponse:
       properties:
-        plan:
+        checkout_url:
           type: string
-          pattern: ^(hobby|team|team_annual)$
-          title: Plan
-        deal_code:
-          anyOf:
-          - type: string
-            maxLength: 64
-          - type: 'null'
-          title: Deal Code
+          title: Checkout Url
       type: object
       required:
-      - plan
-      title: CheckoutRequest
+      - checkout_url
+      title: CheckoutResponse
+    MonthlySwitchPortalResponse:
+      properties:
+        portal_url:
+          type: string
+          title: Portal Url
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - portal_url
+      - status
+      title: MonthlySwitchPortalResponse
     BillingStateResponse:
       properties:
         plan_tier:
@@ -146,6 +285,49 @@ components:
           type: boolean
           title: Has Customer
           default: false
+        refund_window_ends_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Refund Window Ends At
+        refund_eligible:
+          type: boolean
+          title: Refund Eligible
+          default: false
+        is_payg:
+          type: boolean
+          title: Is Payg
+          default: false
+        credit_balance_bytes:
+          type: integer
+          title: Credit Balance Bytes
+          default: 0
+        credit_balance_credits:
+          type: number
+          title: Credit Balance Credits
+          default: 0.0
+        free_grant_credits:
+          type: integer
+          title: Free Grant Credits
+          default: 0
+        credit_price_cents:
+          type: integer
+          title: Credit Price Cents
+          default: 5
+        bytes_per_credit:
+          type: integer
+          title: Bytes Per Credit
+          default: 100000000
+        payg_out_of_credits_mode:
+          type: string
+          title: Payg Out Of Credits Mode
+          default: hard_stop
+        credit_pack_presets:
+          items:
+            type: integer
+          type: array
+          title: Credit Pack Presets
       type: object
       required:
       - plan_tier
@@ -161,33 +343,6 @@ components:
       - trial_ends_at
       - cancel_at_period_end
       title: BillingStateResponse
-    PortalResponse:
-      properties:
-        portal_url:
-          type: string
-          title: Portal Url
-      type: object
-      required:
-      - portal_url
-      title: PortalResponse
-    CheckoutResponse:
-      properties:
-        checkout_url:
-          type: string
-          title: Checkout Url
-      type: object
-      required:
-      - checkout_url
-      title: CheckoutResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -214,3 +369,111 @@ components:
       - msg
       - type
       title: ValidationError
+    CreditPackCheckoutRequest:
+      properties:
+        credits:
+          type: integer
+          minimum: 10.0
+          title: Credits
+      type: object
+      required:
+      - credits
+      title: CreditPackCheckoutRequest
+    PortalResponse:
+      properties:
+        portal_url:
+          type: string
+          title: Portal Url
+      type: object
+      required:
+      - portal_url
+      title: PortalResponse
+    CreditPackCheckoutResponse:
+      properties:
+        checkout_url:
+          type: string
+          title: Checkout Url
+      type: object
+      required:
+      - checkout_url
+      title: CreditPackCheckoutResponse
+    SelfServeCancelRequest:
+      properties:
+        reason:
+          type: string
+          pattern: ^(too_expensive|missing_features|switched_service|too_complex|low_quality|customer_service|unused|other)$
+          title: Reason
+        reason_detail:
+          anyOf:
+          - type: string
+            maxLength: 500
+          - type: 'null'
+          title: Reason Detail
+      type: object
+      required:
+      - reason
+      title: SelfServeCancelRequest
+    SelfServeCancelResponse:
+      properties:
+        plan_tier:
+          type: string
+          title: Plan Tier
+        subscription_status:
+          type: string
+          title: Subscription Status
+        refunded:
+          type: boolean
+          title: Refunded
+        refund_amount_cents:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Refund Amount Cents
+        subscription_canceled:
+          type: boolean
+          title: Subscription Canceled
+      type: object
+      required:
+      - plan_tier
+      - subscription_status
+      - refunded
+      - subscription_canceled
+      title: SelfServeCancelResponse
+    CheckoutRequest:
+      properties:
+        plan:
+          type: string
+          pattern: ^team$
+          title: Plan
+        deal_code:
+          anyOf:
+          - type: string
+            maxLength: 64
+            pattern: ^[A-Za-z0-9_-]+$
+          - type: 'null'
+          title: Deal Code
+      type: object
+      required:
+      - plan
+      title: CheckoutRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MonthlySwitchPortalRequest:
+      properties:
+        deal_code:
+          type: string
+          maxLength: 64
+          minLength: 1
+          pattern: ^[A-Za-z0-9_-]+$
+          title: Deal Code
+      type: object
+      required:
+      - deal_code
+      title: MonthlySwitchPortalRequest
