@@ -132,3 +132,9 @@ components:
       required:
       - grant_type
       title: Body_token_endpoint_oauth_token_post
+x-provenance:
+  method: harvested
+  publisher: Codag
+  source: https://api.codag.ai/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
